@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  
+  <!-- إعدادات أيقونة التطبيق واسمه على الشاشة الرئيسية (آيفون وأندرويد) -->
+  <title>المتون العلمية</title>
+  <meta name="application-name" content="المتون العلمية" />
+  <meta name="apple-mobile-web-app-title" content="المتون العلمية" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0A2E22" />
+  <link rel="icon" type="image/png" href="Saa.png" />
+  <link rel="apple-touch-icon" href="Saa.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            amiri: ['Amiri', 'serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    html, body {
+      font-family: 'Cairo', sans-serif;
+      overflow-x: hidden;
+      overscroll-behavior-y: none;
+      -webkit-text-size-adjust: 100%;
+    }
+    .islamic-pattern {
+      background-image: radial-gradient(rgba(101, 208, 30, 0.08) 1px, transparent 1px),
+                        radial-gradient(rgba(212, 175, 55, 0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+    }
+    .pill-switch {
+      display: inline-flex;
+      background: rgba(148, 163, 184, 0.16);
+      padding: 3px;
+      border-radius: 9999px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      gap: 3px;
+    }
+    .pill-option {
+      min-width: 54px;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 800;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .pill-option.yes-active {
+      background: linear-gradient(135deg, #0F4C3A 0%, #16A34A 100%);
+      color: #ffffff;
+    }
+    .pill-option.no-active {
+      background: linear-gradient(135deg, #BE123C 0%, #E11D48 100%);
+      color: #ffffff;
+    }
+    .luxury-cert-frame {
+      border: 3px solid #0A2E22;
+      box-shadow: inset 0 0 0 3px #ffffff, inset 0 0 0 5px #D4AF37;
+    }
+  </style>
+</head>
+<body class="bg-[#F6F5F0] text-slate-800 dark:bg-[#071510] dark:text-slate-100 islamic-pattern min-h-screen flex flex-col select-none">
+
+  <!-- الشريط العلوي (خالي تماماً من أي إشارة للمشرف) -->
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/85 dark:bg-[#0A1F18]/85 border-b border-emerald-900/10 dark:border-emerald-500/15 shadow-sm">
+    <div class="max-w-xl mx-auto px-3.5 py-2.5 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <div class="bg-white rounded-2xl p-1 shadow-md border border-emerald-900/15 w-12 h-12 flex items-center justify-center shrink-0 overflow-hidden" id="headerLogoBox"></div>
+        <div>
+          <h1 class="text-xs sm:text-sm font-black text-[#0A2E22] dark:text-emerald-300 leading-snug">
+            مجمع حلقات الإمام الشاطبي
+          </h1>
+          <p class="text-[10px] sm:text-xs font-semibold text-slate-500 dark:text-emerald-100/70">
+            لتحفيظ القرآن الكريم • برنامج المتون العلمية
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="cloudStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" title="حالة الاتصال"></span>
+        <button onclick="toggleTheme()" class="w-9 h-9 rounded-xl bg-emerald-950/5 dark:bg-emerald-500/10 text-amber-500 dark:text-amber-300 border border-emerald-900/10 dark:border-emerald-400/20 flex items-center justify-center">
+          <i class="fa-solid fa-sun hidden dark:inline text-sm"></i>
+          <i class="fa-solid fa-moon inline dark:hidden text-sm text-[#0A2E22]"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-xl mx-auto w-full px-3.5 py-5">
+
+    <!-- 1. شاشة التفعيل بالكود لمرة واحدة فقط -->
+    <section id="studentCodeLoginView" class="hidden">
+      <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-6 shadow-xl border border-emerald-900/10 dark:border-emerald-500/20 text-center space-y-5">
+        <div class="bg-white rounded-3xl p-2 shadow-lg border-2 border-[#65D01E]/40 w-28 h-28 mx-auto flex items-center justify-center overflow-hidden" id="loginLogoBox"></div>
+
+        <div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] mb-1.5">
+            <i class="fa-solid fa-lock"></i>
+            <span>تفعيل حساب الطالب لمرة واحدة</span>
+          </span>
+          <h2 class="text-lg font-black text-[#0A2E22] dark:text-white">أدخل كود الدخول الخاص بك</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+            أدخل الكود المكون من 4 أرقام الذي استلمته من معلم الحلقة، وسيُربط حسابك بهذا الجهاز بشكل دائم.
+          </p>
+        </div>
+
+        <form onsubmit="handleStudentCodeLogin(event)" class="space-y-4">
+          <input type="tel" id="studentCodeInput" inputmode="numeric" maxlength="6" required placeholder="••••"
+            class="w-full py-3.5 px-4 rounded-2xl bg-slate-50 dark:bg-[#071510] border-2 border-slate-200 dark:border-emerald-700/40 text-center text-2xl tracking-[0.5em] font-black text-slate-900 dark:text-white focus:outline-none focus:border-[#65D01E]" />
+
+          <button type="submit" id="btnVerifyCode"
+            class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-[#0A2E22] via-[#0F4C3A] to-[#15803D] text-white font-black text-sm shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-check-circle text-[#7CE82B]"></i>
+            <span>تفعيل الدخول</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 2. شاشة الطالب اليومية (مقفلة على حسابه الدائم) -->
+    <section id="studentDailyView" class="hidden space-y-4">
+
+      <!-- بطاقة تعريف الطالب (بدون زر تبديل أو خروج) -->
+      <div class="rounded-3xl bg-gradient-to-br from-[#0A2E22] via-[#0F4C3A] to-[#135D47] text-white p-4 sm:p-5 shadow-xl border border-emerald-400/20 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-white p-1 shadow-md shrink-0 flex items-center justify-center overflow-hidden" id="cardMiniLogo"></div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-[#7CE82B] animate-pulse"></span>
+              <span class="text-[10px] font-bold text-[#7CE82B]">حساب طالب مُفعّل</span>
+            </div>
+            <h2 id="activeStudentName" class="text-base sm:text-lg font-black text-white leading-tight mt-0.5">--</h2>
+            <p id="activeStudentMeta" class="text-[11px] text-emerald-100/90 font-bold mt-0.5">--</p>
+          </div>
+        </div>
+        <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-[#7CE82B]" title="الحساب مرتبط بهذا الجهاز">
+          <i class="fa-solid fa-shield-check text-sm"></i>
+        </div>
+      </div>
+
+      <!-- رسالة يومي الجمعة والسبت -->
+      <div id="friSatNoticeCard" class="hidden bg-white dark:bg-[#0D241C] rounded-3xl p-5 text-center shadow-lg border border-emerald-900/10 dark:border-emerald-500/20 space-y-3">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-2xl">
+          <i class="fa-solid fa-mosque"></i>
+        </div>
+        <h3 class="text-base font-black text-slate-900 dark:text-white" id="friSatDayTitle">يوم الجمعة المبارك</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+          أيام الرصد الأسبوعي من <b>الخميس إلى الأربعاء</b>. يمكنك معاينة جدول الأسبوع أو إرسال تنبيه إذا نسيت تسجيل يوم سابق.
+        </p>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button onclick="openWeeklyPreview()" class="py-2.5 px-3 rounded-2xl bg-gradient-to-r from-[#0F4C3A] to-[#16A34A] text-white text-xs font-black shadow">
+            <i class="fa-solid fa-eye ml-1"></i> معاينة الأسبوع
+          </button>
+          <button onclick="openForgotDayModal()" class="py-2.5 px-3 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/30 text-xs font-black">
+            <i class="fa-solid fa-bell ml-1"></i> نسيت يوماً سابقاً؟
+          </button>
+        </div>
+      </div>
+
+      <!-- بطاقة الرصد اليومي (5 بنود فقط بدون تقييم) -->
+      <div id="todayTaskCard" class="bg-white dark:bg-[#0D241C] rounded-3xl p-4 sm:p-5 shadow-xl border border-emerald-900/10 dark:border-emerald-500/20 space-y-3.5">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-emerald-800/40">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-lg bg-[#65D01E]/20 text-[#0F4C3A] dark:text-[#7CE82B] text-xs font-black" id="todayNameBadge">الخميس</span>
+              <span class="text-xs font-bold text-slate-400" id="todayDateDisplay">--</span>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-emerald-100/60 mt-1 font-medium" id="weekLabelDisplay">الأسبوع الحالي</p>
+          </div>
+          <div id="todayStatusChip" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-amber-500/15 text-amber-600 dark:text-amber-300">
+            بانتظار الإرسال
+          </div>
+        </div>
+
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/90 dark:bg-[#071510]/80 border border-slate-200/70 dark:border-emerald-800/30">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-[#0F4C3A]/10 dark:bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-xs"><i class="fa-solid fa-book-open"></i></div>
+              <div>
+                <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-white">الحفظ الجديد</h4>
+                <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">مقدار صفحة واحدة</p>
+              </div>
+            </div>
+            <div class="pill-switch" id="switch-memorization">
+              <button type="button" class="pill-option yes-active" onclick="selectPill('memorization', 'نعم')">نعم</button>
+              <button type="button" class="pill-option text-slate-500" onclick="selectPill('memorization', 'لا')">لا</button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/90 dark:bg-[#071510]/80 border border-slate-200/70 dark:border-emerald-800/30">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-[#0F4C3A]/10 dark:bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-xs"><i class="fa-solid fa-repeat"></i></div>
+              <div>
+                <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-white">مقدار التكرار</h4>
+                <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">١٠ نظر ثم ٢٠ غيباً</p>
+              </div>
+            </div>
+            <div class="pill-switch" id="switch-repetition">
+              <button type="button" class="pill-option yes-active" onclick="selectPill('repetition', 'نعم')">نعم</button>
+              <button type="button" class="pill-option text-slate-500" onclick="selectPill('repetition', 'لا')">لا</button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/90 dark:bg-[#071510]/80 border border-slate-200/70 dark:border-emerald-800/30">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-[#0F4C3A]/10 dark:bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-xs"><i class="fa-solid fa-clock-rotate-left"></i></div>
+              <div>
+                <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-white">تكرار الأمس</h4>
+                <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">٢٠ مرة غيباً</p>
+              </div>
+            </div>
+            <div class="pill-switch" id="switch-yesterday">
+              <button type="button" class="pill-option yes-active" onclick="selectPill('yesterday', 'نعم')">نعم</button>
+              <button type="button" class="pill-option text-slate-500" onclick="selectPill('yesterday', 'لا')">لا</button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/90 dark:bg-[#071510]/80 border border-slate-200/70 dark:border-emerald-800/30">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-[#0F4C3A]/10 dark:bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-xs"><i class="fa-solid fa-link"></i></div>
+              <div>
+                <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-white">الربط العام</h4>
+                <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">١٠ صفحات</p>
+              </div>
+            </div>
+            <div class="pill-switch" id="switch-linking">
+              <button type="button" class="pill-option yes-active" onclick="selectPill('linking', 'نعم')">نعم</button>
+              <button type="button" class="pill-option text-slate-500" onclick="selectPill('linking', 'لا')">لا</button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/90 dark:bg-[#071510]/80 border border-slate-200/70 dark:border-emerald-800/30">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-[#0F4C3A]/10 dark:bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-xs"><i class="fa-solid fa-layer-group"></i></div>
+              <div>
+                <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-white">المراجعة</h4>
+                <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">١٠ صفحات</p>
+              </div>
+            </div>
+            <div class="pill-switch" id="switch-revision">
+              <button type="button" class="pill-option yes-active" onclick="selectPill('revision', 'نعم')">نعم</button>
+              <button type="button" class="pill-option text-slate-500" onclick="selectPill('revision', 'لا')">لا</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="studentNoteBanner" class="hidden p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-xs text-amber-800 dark:text-amber-200 font-bold">
+          <i class="fa-solid fa-comment-dots ml-1 text-amber-500"></i>
+          <span>ملاحظة المعلم: </span><span id="studentNoteText"></span>
+        </div>
+
+        <div class="pt-1 space-y-2.5">
+          <button onclick="submitStudentDailyProgress()" id="btnDailySubmit"
+            class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-[#0A2E22] via-[#0F4C3A] to-[#16A34A] text-white font-black text-xs sm:text-sm shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>حفظ وإرسال إنجاز اليوم</span>
+          </button>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="openWeeklyPreview()"
+              class="py-2.5 px-3 rounded-2xl bg-slate-100 dark:bg-emerald-950/60 text-slate-700 dark:text-emerald-200 font-extrabold text-[11px] border border-slate-200/80 dark:border-emerald-700/30 flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-eye text-emerald-500"></i>
+              <span>معاينة سجل الأسبوع</span>
+            </button>
+
+            <button onclick="openForgotDayModal()"
+              class="py-2.5 px-3 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-300 font-extrabold text-[11px] border border-amber-500/25 flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-bell"></i>
+              <span>نسيت يوماً سابقاً؟</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- نافذة معاينة سجل الأسبوع (للطالب للمعاينة فقط) -->
+  <div id="previewModalOverlay" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm overflow-y-auto p-2 sm:p-5 flex items-center justify-center">
+    <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden my-auto">
+      <div class="bg-[#0A2E22] text-white px-4 py-3 flex items-center justify-between border-b border-[#65D01E]/30">
+        <span class="text-xs font-extrabold"><i class="fa-solid fa-eye text-[#7CE82B] ml-1.5"></i> معاينة سجل الأسبوع</span>
+        <button onclick="document.getElementById('previewModalOverlay').classList.add('hidden')" class="px-3 py-1.5 rounded-xl bg-white/15 text-white text-xs font-bold">إغلاق</button>
+      </div>
+      <div class="p-3 sm:p-5 bg-slate-100 overflow-x-auto">
+        <div class="luxury-cert-frame bg-white text-slate-900 rounded-2xl p-4 min-w-[650px]">
+          <div class="flex items-center justify-between pb-3 border-b-2 border-[#D4AF37]/40 mb-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-12 h-12 rounded-xl border border-emerald-900/20 p-1 flex items-center justify-center overflow-hidden" id="pdfLogoSlot"></div>
+              <div>
+                <h3 class="text-xs font-black text-[#0A2E22]">مجمع حلقات الإمام الشاطبي</h3>
+                <p class="text-[10px] font-bold text-[#16A34A]" id="certWeekSubtitle">--</p>
+              </div>
+            </div>
+            <div class="text-left text-xs">
+              <p class="font-black text-[#0A2E22]" id="certStudentName">--</p>
+              <p class="font-bold text-[#16A34A]" id="certStudentMatn">--</p>
+            </div>
+          </div>
+
+          <div id="certTableWrapper" class="rounded-xl border-2 border-[#0A2E22] overflow-hidden"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة نسيان يوم سابق -->
+  <div id="forgotDayModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-amber-500/30 space-y-3">
+      <h3 class="text-sm font-black text-slate-900 dark:text-white text-center">إرسال تنبيه بنسيان يوم سابق</h3>
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 mb-1">اختر اليوم:</label>
+        <select id="forgotDaySelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-bold text-slate-900 dark:text-white">
+          <option value="thu">الخميس</option>
+          <option value="sun">الأحد</option>
+          <option value="mon">الإثنين</option>
+          <option value="tue">الثلاثاء</option>
+          <option value="wed">الأربعاء</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 mb-1">تفاصيل إنجازك في ذلك اليوم:</label>
+        <input type="text" id="forgotDayDetails" placeholder="أتممت الحفظ والتكرار والمراجعة..."
+          class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-semibold text-slate-900 dark:text-white" />
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-2">
+        <button onclick="sendForgotDayNotification()" class="py-2.5 rounded-xl bg-amber-500 text-white text-xs font-black">إرسال التنبيه</button>
+        <button onclick="document.getElementById('forgotDayModal').classList.add('hidden')" class="py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toastBox" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300 bg-[#0A2E22] text-white border border-[#65D01E]/40 px-4 py-2.5 rounded-2xl shadow-2xl text-xs font-extrabold flex items-center gap-2">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-[#7CE82B]"></i>
+    <span id="toastText">تم</span>
+  </div>
+
+  <script>
+    // منع الزوم باللمس تماماً على الآيفون والأندرويد
+    document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+    document.addEventListener('dblclick', function(e) { e.preventDefault(); }, { passive: false });
+
+    const FIREBASE_DB_URL = "https://shetibi-moton-tracker-default-rtdb.firebaseio.com";
+    const DEFAULT_LOGO_PATH = "Saaa.png";
+
+    const WEEK_DAYS = [
+      { key: 'thu', idx: 4, ar: 'الخميس', offsetFromThu: 0 },
+      { key: 'sun', idx: 0, ar: 'الأحد', offsetFromThu: 3 },
+      { key: 'mon', idx: 1, ar: 'الإثنين', offsetFromThu: 4 },
+      { key: 'tue', idx: 2, ar: 'الثلاثاء', offsetFromThu: 5 },
+      { key: 'wed', idx: 3, ar: 'الأربعاء', offsetFromThu: 6 }
+    ];
+
+    let state = {
+      theme: localStorage.getItem('shatibi_theme') || 'dark',
+      lockedStudentId: localStorage.getItem('shatibi_locked_student_id') || null,
+      cloudLogoUrl: null,
+      studentData: null,
+      todayForm: { memorization: 'نعم', repetition: 'نعم', yesterday: 'نعم', linking: 'نعم', revision: 'نعم' }
+    };
+
+    function getCurrentWeekContext() {
+      const now = new Date();
+      const dayNum = now.getDay();
+      const daysSinceThursday = (dayNum - 4 + 7) % 7;
+      const thursdayStart = new Date(now);
+      thursdayStart.setDate(now.getDate() - daysSinceThursday);
+
+      const wednesdayEnd = new Date(thursdayStart);
+      wednesdayEnd.setDate(thursdayStart.getDate() + 6);
+
+      const weekId = `W_${thursdayStart.getFullYear()}_${String(thursdayStart.getMonth() + 1).padStart(2, '0')}_${String(thursdayStart.getDate()).padStart(2, '0')}`;
+      const startHijri = thursdayStart.toLocaleDateString('ar-SA-u-ca-islamic', { day: '2-digit', month: '2-digit' });
+      const endHijri = wednesdayEnd.toLocaleDateString('ar-SA-u-ca-islamic', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      const weekLabel = `أسبوع (${startHijri} إلى ${endHijri})`;
+      const monthName = thursdayStart.toLocaleDateString('ar-SA-u-ca-islamic', { month: 'long', year: 'numeric' });
+
+      const dayDatesMap = {};
+      WEEK_DAYS.forEach(d => {
+        const dt = new Date(thursdayStart);
+        dt.setDate(thursdayStart.getDate() + d.offsetFromThu);
+        dayDatesMap[d.key] = dt.toLocaleDateString('ar-SA-u-ca-islamic', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      });
+
+      const dayObj = WEEK_DAYS.find(d => d.idx === dayNum);
+      return {
+        weekId,
+        weekLabel,
+        monthName,
+        dayDatesMap,
+        key: dayObj ? dayObj.key : null,
+        ar: dayObj ? dayObj.ar : (dayNum === 5 ? 'الجمعة' : 'السبت'),
+        isFriOrSat: (dayNum === 5 || dayNum === 6),
+        todayHijri: now.toLocaleDateString('ar-SA-u-ca-islamic', { year: 'numeric', month: '2-digit', day: '2-digit' })
+      };
+    }
+
+    function renderLogos() {
+      const src = state.cloudLogoUrl || DEFAULT_LOGO_PATH;
+      const html = `<img src="${src}" alt="شعار مجمع الإمام الشاطبي" class="w-full h-full object-contain rounded-xl" />`;
+      ['headerLogoBox', 'loginLogoBox', 'cardMiniLogo', 'pdfLogoSlot'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = html;
+      });
+    }
+
+    async function loadCloudSettingsAndStudent() {
+      const dot = document.getElementById('cloudStatusDot');
+      try {
+        const settingsRes = await fetch(`${FIREBASE_DB_URL}/settings.json`);
+        const settings = await settingsRes.json();
+        if (settings && settings.logo) {
+          state.cloudLogoUrl = settings.logo;
+        }
+        renderLogos();
+
+        if (state.lockedStudentId) {
+          const stuRes = await fetch(`${FIREBASE_DB_URL}/students/${state.lockedStudentId}.json`);
+          const stu = await stuRes.json();
+          if (stu && stu.id && stu.name) {
+            state.studentData = stu;
+            dot.className = 'w-2.5 h-2.5 rounded-full bg-[#65D01E]';
+            openStudentWorkspace();
+            return;
+          } else {
+            localStorage.removeItem('shatibi_locked_student_id');
+            state.lockedStudentId = null;
+          }
+        }
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-[#65D01E]';
+        document.getElementById('studentCodeLoginView').classList.remove('hidden');
+      } catch (err) {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
+        showToast('تعذر الاتصال بالإنترنت', 'error');
+      }
+    }
+
+    async function handleStudentCodeLogin(e) {
+      e.preventDefault();
+      const enteredCode = document.getElementById('studentCodeInput').value.trim();
+      if (!enteredCode) return;
+
+      const btn = document.getElementById('btnVerifyCode');
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/students.json`);
+        const allStudents = await res.json();
+        const validList = (allStudents && typeof allStudents === 'object')
+          ? Object.values(allStudents).filter(s => s && s.id && s.name && s.code)
+          : [];
+
+        const matched = validList.find(s => String(s.code).trim() === enteredCode);
+        if (!matched) {
+          showToast('الكود غير صحيح، تأكد من معلم الحلقة', 'error');
+          btn.disabled = false;
+          return;
+        }
+
+        state.lockedStudentId = matched.id;
+        state.studentData = matched;
+        localStorage.setItem('shatibi_locked_student_id', matched.id);
+
+        document.getElementById('studentCodeLoginView').classList.add('hidden');
+        openStudentWorkspace();
+        showToast(`تم تفعيل حسابك بنجاح يا ${matched.name}`);
+      } catch (err) {
+        showToast('حدث خطأ في الاتصال بالإنترنت', 'error');
+        btn.disabled = false;
+      }
+    }
+
+    function openStudentWorkspace() {
+      const stu = state.studentData;
+      if (!stu) return;
+
+      document.getElementById('studentCodeLoginView').classList.add('hidden');
+      document.getElementById('studentDailyView').classList.remove('hidden');
+
+      document.getElementById('activeStudentName').textContent = stu.name;
+      document.getElementById('activeStudentMeta').textContent = stu.level ? `${stu.matn} • ${stu.level}` : stu.matn;
+
+      const weekCtx = getCurrentWeekContext();
+      if (weekCtx.isFriOrSat || !weekCtx.key) {
+        document.getElementById('friSatDayTitle').textContent = `يوم ${weekCtx.ar} المبارك`;
+        document.getElementById('friSatNoticeCard').classList.remove('hidden');
+        document.getElementById('todayTaskCard').classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('friSatNoticeCard').classList.add('hidden');
+      document.getElementById('todayTaskCard').classList.remove('hidden');
+
+      document.getElementById('todayNameBadge').textContent = weekCtx.ar;
+      document.getElementById('todayDateDisplay').textContent = weekCtx.todayHijri;
+      document.getElementById('weekLabelDisplay').textContent = weekCtx.weekLabel;
+
+      const rec = (stu.weeks && stu.weeks[weekCtx.weekId] && stu.weeks[weekCtx.weekId].days && stu.weeks[weekCtx.weekId].days[weekCtx.key]) || {};
+
+      state.todayForm = {
+        memorization: rec.memorization || 'نعم',
+        repetition: rec.repetition || 'نعم',
+        yesterday: rec.yesterday || 'نعم',
+        linking: rec.linking || 'نعم',
+        revision: rec.revision || 'نعم'
+      };
+      Object.keys(state.todayForm).forEach(f => updatePillVisual(f, state.todayForm[f]));
+
+      const noteBanner = document.getElementById('studentNoteBanner');
+      if (rec.note) {
+        document.getElementById('studentNoteText').textContent = rec.note;
+        noteBanner.classList.remove('hidden');
+      } else {
+        noteBanner.classList.add('hidden');
+      }
+
+      const chip = document.getElementById('todayStatusChip');
+      if (rec.submitted) {
+        chip.className = 'px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-[#7CE82B]';
+        chip.innerHTML = `<i class="fa-solid fa-circle-check ml-1"></i> تم الإرسال (${rec.time || ''})`;
+      }
+    }
+
+    function selectPill(field, value) {
+      state.todayForm[field] = value;
+      updatePillVisual(field, value);
+    }
+
+    function updatePillVisual(field, value) {
+      const container = document.getElementById(`switch-${field}`);
+      if (!container) return;
+      const btns = container.querySelectorAll('.pill-option');
+      if (value === 'نعم') {
+        btns[0].className = 'pill-option yes-active';
+        btns[1].className = 'pill-option text-slate-500';
+      } else {
+        btns[0].className = 'pill-option text-slate-500';
+        btns[1].className = 'pill-option no-active';
+      }
+    }
+
+    async function submitStudentDailyProgress() {
+      const weekCtx = getCurrentWeekContext();
+      if (weekCtx.isFriOrSat || !weekCtx.key || !state.studentData) return;
+
+      const btn = document.getElementById('btnDailySubmit');
+      btn.disabled = true;
+
+      const stu = state.studentData;
+      if (!stu.weeks) stu.weeks = {};
+      if (!stu.weeks[weekCtx.weekId]) {
+        stu.weeks[weekCtx.weekId] = {
+          label: weekCtx.weekLabel,
+          monthName: weekCtx.monthName,
+          dayDatesMap: weekCtx.dayDatesMap,
+          days: {}
+        };
+      }
+
+      const existingNote = (stu.weeks[weekCtx.weekId].days[weekCtx.key] && stu.weeks[weekCtx.weekId].days[weekCtx.key].note) || '';
+      const timeStr = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+
+      stu.weeks[weekCtx.weekId].days[weekCtx.key] = {
+        date: weekCtx.todayHijri,
+        memorization: state.todayForm.memorization,
+        repetition: state.todayForm.repetition,
+        yesterday: state.todayForm.yesterday,
+        linking: state.todayForm.linking,
+        revision: state.todayForm.revision,
+        note: existingNote,
+        submitted: true,
+        time: timeStr
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/students/${stu.id}/weeks/${weekCtx.weekId}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(stu.weeks[weekCtx.weekId])
+        });
+        openStudentWorkspace();
+        if (typeof confetti === 'function') {
+          confetti({ particleCount: 70, spread: 60, origin: { y: 0.72 }, colors: ['#0F4C3A', '#65D01E', '#D4AF37'] });
+        }
+        showToast('تم حفظ وإرسال إنجاز اليوم بنجاح!');
+      } catch (err) {
+        showToast('تعذر الإرسال، تأكد من الإنترنت', 'error');
+      }
+      btn.disabled = false;
+    }
+
+    function openForgotDayModal() {
+      document.getElementById('forgotDayDetails').value = '';
+      document.getElementById('forgotDayModal').classList.remove('hidden');
+    }
+
+    async function sendForgotDayNotification() {
+      if (!state.studentData) return;
+      const dayKey = document.getElementById('forgotDaySelect').value;
+      const dayObj = WEEK_DAYS.find(d => d.key === dayKey);
+      const details = document.getElementById('forgotDayDetails').value.trim();
+      const weekCtx = getCurrentWeekContext();
+
+      const alertId = `ALT_${Date.now()}`;
+      const alertObj = {
+        id: alertId,
+        studentId: state.studentData.id,
+        studentName: state.studentData.name,
+        weekId: weekCtx.weekId,
+        weekLabel: weekCtx.weekLabel,
+        dayKey: dayKey,
+        dayAr: dayObj ? dayObj.ar : dayKey,
+        details: details || 'نسي الطالب تسجيل هذا اليوم ويطلب رصده',
+        createdAt: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/forgotAlerts/${alertId}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(alertObj)
+        });
+        document.getElementById('forgotDayModal').classList.add('hidden');
+        showToast('تم إرسال التنبيه للمعلم بنجاح!');
+      } catch (err) {
+        showToast('تعذر الإرسال', 'error');
+      }
+    }
+
+    function openWeeklyPreview() {
+      const stu = state.studentData;
+      if (!stu) return;
+      const weekCtx = getCurrentWeekContext();
+      const weekObj = (stu.weeks && stu.weeks[weekCtx.weekId]) || { label: weekCtx.weekLabel, days: {} };
+
+      document.getElementById('certStudentName').textContent = stu.name;
+      document.getElementById('certStudentMatn').textContent = stu.level ? `${stu.matn} (${stu.level})` : stu.matn;
+      document.getElementById('certWeekSubtitle').textContent = weekObj.label;
+
+      const pill = (v) => v === 'نعم'
+        ? `<span style="background:#16A34A;color:#fff;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:900;">نعم ✓</span>`
+        : (v === 'لا' ? `<span style="background:#E11D48;color:#fff;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:900;">لا ✕</span>` : '—');
+
+      let rows = '';
+      WEEK_DAYS.forEach((d, idx) => {
+        const r = (weekObj.days && weekObj.days[d.key]) || {};
+        const dt = r.date || (weekObj.dayDatesMap && weekObj.dayDatesMap[d.key]) || weekCtx.dayDatesMap[d.key] || '—';
+        rows += `
+          <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-[#F0F9F4]'}">
+            <td class="py-2 px-2 border-l border-emerald-900/20 font-black text-[#0A2E22]">${d.ar}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20 text-slate-600">${dt}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.memorization)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.repetition)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.yesterday)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.linking)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.revision)}</td>
+            <td class="py-2 px-2 text-[10px]">${r.note || ''}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('certTableWrapper').innerHTML = `
+        <table class="w-full border-collapse text-center text-[11px]">
+          <thead>
+            <tr class="bg-[#0A2E22] text-white font-extrabold">
+              <th class="py-2 px-2 border-l border-emerald-700/50 text-[#FDE68A]">اليوم</th>
+              <th class="py-2 px-2 border-l border-emerald-700/50">التاريخ</th>
+              <th class="py-2 px-2 border-l border-emerald-700/50">الحفظ</th>
+              <th class="py-2 px-2 border-l border-emerald-700/50">التكرار</th>
+              <th class="py-2 px-2 border-l border-emerald-700/50">تكرار الأمس</th>
+              <th class="py-2 px-2 border-l border-emerald-700/50">الربط العام</th>
+              <th class="py-2 px-2 border-l border-emerald-700/50">المراجعة</th>
+              <th class="py-2 px-2">ملاحظات</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-emerald-900/20 font-bold">${rows}</tbody>
+        </table>
+      `;
+      document.getElementById('previewModalOverlay').classList.remove('hidden');
+    }
+
+    function toggleTheme() {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('shatibi_theme', state.theme);
+      applyTheme(state.theme);
+    }
+
+    function applyTheme(t) {
+      if (t === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    }
+
+    function showToast(msg, type = 'success') {
+      const box = document.getElementById('toastBox');
+      document.getElementById('toastText').textContent = msg;
+      document.getElementById('toastIcon').className = type === 'error'
+        ? 'fa-solid fa-circle-exclamation text-rose-400'
+        : 'fa-solid fa-circle-check text-[#7CE82B]';
+      box.classList.remove('opacity-0', 'translate-y-3');
+      box.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(window._tt);
+      window._tt = setTimeout(() => {
+        box.classList.remove('opacity-100', 'translate-y-0');
+        box.classList.add('opacity-0', 'translate-y-3');
+      }, 2800);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      applyTheme(state.theme);
+      renderLogos();
+      loadCloudSettingsAndStudent();
+    });
+  </script>
+</body>
+</html>
