@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  
+  <title>إشراف المتون</title>
+  <meta name="application-name" content="إشراف المتون" />
+  <meta name="apple-mobile-web-app-title" content="إشراف المتون" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0A2E22" />
+  <link rel="icon" type="image/png" href="Saaa.png" />
+  <link rel="apple-touch-icon" href="Saaa.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            amiri: ['Amiri', 'serif'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: pan-y;
+    }
+    html, body {
+      font-family: 'Cairo', sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-text-size-adjust: 100%;
+    }
+    .safe-top-header {
+      padding-top: calc(env(safe-area-inset-top, 16px) + 10px);
+    }
+    .islamic-pattern {
+      background-image: radial-gradient(rgba(101, 208, 30, 0.08) 1px, transparent 1px),
+                        radial-gradient(rgba(212, 175, 55, 0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+    }
+    .luxury-cert-frame {
+      border: 3px solid #0A2E22;
+      box-shadow: inset 0 0 0 3px #ffffff, inset 0 0 0 5px #D4AF37;
+    }
+    @page { size: A4 landscape; margin: 5mm; }
+    @media print {
+      html, body {
+        background: #fff !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .no-print { display: none !important; }
+      #printModalOverlay {
+        position: static !important;
+        background: transparent !important;
+        padding: 0 !important;
+        display: block !important;
+        overflow: visible !important;
+      }
+      #printModalContainer {
+        box-shadow: none !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+      }
+      #printBgWrapper {
+        padding: 0 !important;
+        background: #fff !important;
+      }
+      .print-a4-sheet {
+        page-break-after: always;
+        break-after: page;
+        width: 287mm !important;
+        height: 199mm !important;
+        max-height: 199mm !important;
+        margin: 0 auto !important;
+        padding: 12px 16px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+      }
+      .print-a4-sheet:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#F6F5F0] text-slate-800 dark:bg-[#071510] dark:text-slate-100 islamic-pattern min-h-screen flex flex-col">
+
+  <!-- الشريط العلوي -->
+  <header class="no-print sticky top-0 z-40 backdrop-blur-xl bg-white/90 dark:bg-[#0A1F18]/90 border-b border-emerald-900/10 dark:border-emerald-500/15 shadow-sm safe-top-header pb-2.5">
+    <div class="max-w-3xl mx-auto px-4 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <div class="bg-white rounded-2xl p-1 shadow-md border border-emerald-900/15 w-11 h-11 flex items-center justify-center shrink-0 overflow-hidden" id="headerLogoBox"></div>
+        <div>
+          <h1 class="text-xs sm:text-sm font-black text-[#0A2E22] dark:text-emerald-300 leading-snug">
+            لوحة الإشراف • مجمع الإمام الشاطبي
+          </h1>
+          <p class="text-[10px] sm:text-xs font-bold text-[#16A34A] dark:text-[#7CE82B]">
+            المشرف: منير بن عبد الله آل صادر
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="cloudStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" title="حالة الاتصال"></span>
+        <button onclick="toggleTheme()" aria-label="تبديل المظهر"
+          class="h-8 px-2.5 rounded-xl bg-slate-100 dark:bg-emerald-950/80 border border-slate-300/80 dark:border-emerald-500/30 flex items-center gap-1.5 text-[11px] font-black text-slate-700 dark:text-[#7CE82B] shadow-sm transition active:scale-95">
+          <i class="fa-solid fa-moon text-indigo-500 dark:hidden"></i>
+          <span class="dark:hidden">داكن</span>
+          <i class="fa-solid fa-sun text-amber-400 hidden dark:inline"></i>
+          <span class="hidden dark:inline">فاتح</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="no-print flex-1 max-w-2xl mx-auto w-full px-4 py-6 flex flex-col justify-center">
+
+    <!-- 1. شاشة دخول المشرف -->
+    <section id="adminLoginView" class="max-w-sm mx-auto w-full my-auto">
+      <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-6 shadow-xl border border-emerald-900/10 dark:border-emerald-500/20 text-center space-y-4">
+        <div class="w-24 h-24 mx-auto rounded-3xl bg-white p-1.5 shadow-md border border-emerald-500/30 flex items-center justify-center overflow-hidden" id="loginLogoBox"></div>
+        <div>
+          <h2 class="text-lg font-black text-[#0A2E22] dark:text-white">دخول المشرف</h2>
+          <p class="text-xs font-bold text-[#16A34A] dark:text-[#7CE82B] mt-0.5">المشرف: منير بن عبد الله آل صادر</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">أدخل الرقم السري الخاص بالإشراف</p>
+        </div>
+        <form onsubmit="event.preventDefault(); verifyAdminLogin(event);" class="space-y-3.5">
+          <input type="password" id="adminPinInput" inputmode="numeric" maxlength="8" required placeholder="••••"
+            class="w-full py-3.5 px-4 rounded-2xl bg-slate-50 dark:bg-[#071510] border-2 border-slate-200 dark:border-emerald-700/40 text-center text-2xl tracking-[0.45em] font-black text-slate-900 dark:text-white focus:outline-none focus:border-[#65D01E]" />
+          <button type="submit" id="btnAdminLogin"
+            class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#0A2E22] via-[#0F4C3A] to-[#16A34A] text-white font-black text-sm shadow-lg">
+            دخول لوحة الإشراف
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 2. لوحة تحكم المشرف -->
+    <section id="adminDashboardView" class="hidden space-y-4 my-auto">
+
+      <!-- أولاً: بطاقة اسم المشرف والأسبوع + أزرار التواصل -->
+      <div class="rounded-3xl bg-gradient-to-r from-[#0A2E22] to-[#113D2E] text-white p-4 sm:p-5 shadow-xl border border-[#65D01E]/30 space-y-3">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#65D01E]/20 text-[#7CE82B] text-[10px] font-black mb-1">متصل بالسحابة</span>
+            <h2 class="text-base font-black text-white">المشرف: منير بن عبد الله آل صادر</h2>
+            <p class="text-[11px] text-emerald-100/80 mt-0.5" id="supCurrentWeekInfo">--</p>
+          </div>
+          <div class="flex flex-col gap-1.5 shrink-0">
+            <button onclick="syncAllData(true)" class="px-3.5 py-1.5 rounded-xl bg-[#65D01E]/20 text-[#7CE82B] text-xs font-extrabold flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-rotate"></i> تحديث
+            </button>
+            <button onclick="openChangeAdminPinModal()" class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 text-xs font-extrabold flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-key"></i> رمز المشرف
+            </button>
+          </div>
+        </div>
+
+        <!-- أزرار التواصل والاستبيان -->
+        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-white/10">
+          <button onclick="openAdminCommModal('broadcast')" class="py-2.5 px-2 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-400/30 text-[11px] font-black flex items-center justify-center gap-1">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>رسالة</span>
+          </button>
+          <button onclick="openAdminCommModal('poll')" class="py-2.5 px-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/30 text-[11px] font-black flex items-center justify-center gap-1">
+            <i class="fa-solid fa-square-poll-vertical"></i>
+            <span>استبيان</span>
+          </button>
+          <button onclick="openAdminCommModal('group')" class="py-2.5 px-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-[#7CE82B] border border-[#65D01E]/30 text-[11px] font-black flex items-center justify-center gap-1">
+            <i class="fa-solid fa-comments"></i>
+            <span>المحادثة</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ثانياً: عدد الطلاب والأسبوع واليوم -->
+      <div class="grid grid-cols-3 gap-2.5">
+        <div class="bg-white dark:bg-[#0D241C] p-3 rounded-2xl border border-emerald-900/10 dark:border-emerald-500/20 text-center">
+          <span class="text-[10px] text-slate-400 font-bold block">عدد الطلاب</span>
+          <strong id="supTotalStudents" class="text-lg font-black text-[#0F4C3A] dark:text-[#7CE82B]">0</strong>
+        </div>
+        <div class="bg-white dark:bg-[#0D241C] p-3 rounded-2xl border border-emerald-900/10 dark:border-emerald-500/20 text-center">
+          <span class="text-[10px] text-slate-400 font-bold block">الأسبوع</span>
+          <select id="supWeekFilter" onchange="renderStudentsList()" class="mt-0.5 bg-transparent text-xs font-black text-slate-800 dark:text-[#7CE82B] focus:outline-none max-w-full"></select>
+        </div>
+        <div class="bg-white dark:bg-[#0D241C] p-3 rounded-2xl border border-emerald-900/10 dark:border-emerald-500/20 text-center">
+          <span class="text-[10px] text-slate-400 font-bold block">اليوم</span>
+          <select id="supDayFilter" onchange="renderStudentsList()" class="mt-0.5 bg-transparent text-xs font-black text-slate-800 dark:text-white focus:outline-none">
+            <option value="thu">الخميس</option>
+            <option value="fri">الجمعة (اختياري)</option>
+            <option value="sat">السبت (اختياري)</option>
+            <option value="sun">الأحد</option>
+            <option value="mon">الإثنين</option>
+            <option value="tue">الثلاثاء</option>
+            <option value="wed">الأربعاء</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- تنبيهات نسيان الطلاب لأيام سابقة -->
+      <div id="forgotAlertsContainer" class="hidden space-y-2"></div>
+
+      <!-- ثالثاً: قائمة الطلاب وسجلاتهم + زر تقارير PDF للجميع -->
+      <div class="bg-white dark:bg-[#0D241C] rounded-3xl border border-emerald-900/10 dark:border-emerald-500/20 shadow-lg overflow-hidden">
+        <div class="p-4 border-b border-slate-100 dark:border-emerald-800/40 flex items-center justify-between gap-2 flex-wrap">
+          <div class="flex items-center gap-2">
+            <h3 class="text-sm font-black text-slate-800 dark:text-white">قائمة الطلاب وسجلاتهم</h3>
+            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B]">مزامنة حية</span>
+          </div>
+          <button onclick="openBulkPdfModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#0A2E22] to-[#16A34A] text-white text-xs font-black shadow-md flex items-center gap-1.5">
+            <i class="fa-solid fa-file-pdf text-[#7CE82B]"></i>
+            <span>تقارير PDF للجميع</span>
+          </button>
+        </div>
+        <div id="supervisorStudentsContainer" class="divide-y divide-slate-100 dark:divide-emerald-800/30"></div>
+      </div>
+
+      <!-- رابعاً: إضافة طالب جديد -->
+      <div class="bg-white dark:bg-[#0D241C] p-4 rounded-3xl border border-emerald-900/10 dark:border-emerald-500/20 shadow-sm space-y-3">
+        <h3 class="text-xs font-black text-[#0A2E22] dark:text-[#7CE82B] flex items-center gap-1.5">
+          <i class="fa-solid fa-user-plus"></i> إضافة طالب جديد
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <input type="text" id="supNewName" placeholder="اسم الطالب"
+            class="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-bold text-slate-900 dark:text-white" />
+          <input type="text" id="supNewMatn" placeholder="اسم المتن"
+            class="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-bold text-slate-900 dark:text-white" />
+          <select id="supNewLevel" onchange="toggleCustomLevelInput()"
+            class="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-bold text-slate-900 dark:text-white">
+            <option value="">المستوى (اختياري)</option>
+            <option value="المستوى الأول">المستوى الأول</option>
+            <option value="المستوى الثاني">المستوى الثاني</option>
+            <option value="المستوى الثالث">المستوى الثالث</option>
+            <option value="المستوى الرابع">المستوى الرابع</option>
+            <option value="المستوى الخامس">المستوى الخامس</option>
+            <option value="المستوى السادس">المستوى السادس</option>
+            <option value="المستوى السابع">المستوى السابع</option>
+            <option value="CUSTOM">كتابة مستوى مخصص...</option>
+          </select>
+          <input type="tel" id="supNewCode" inputmode="numeric" maxlength="6" placeholder="كود الطالب (تلقائي إذا ترك فارغاً)"
+            class="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-bold text-slate-900 dark:text-white" />
+          <input type="text" id="supNewCustomLevel" placeholder="اكتب المستوى المخصص هنا..."
+            class="hidden sm:col-span-2 px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-bold text-slate-900 dark:text-white" />
+        </div>
+        <button onclick="adminAddStudent()" id="btnAddStudent" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#0F4C3A] to-[#16A34A] text-white text-xs font-black shadow">
+          + حفظ الطالب وتوليد الكود
+        </button>
+      </div>
+
+      <!-- خامساً: شعار المجمع + إعدادات المسح الشامل -->
+      <div class="bg-white dark:bg-[#0D241C] p-4 rounded-3xl border border-emerald-900/10 dark:border-emerald-500/20 space-y-3 text-xs">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <span class="font-extrabold text-slate-700 dark:text-emerald-100 block">
+              <i class="fa-solid fa-image text-[#65D01E] ml-1"></i> شعار المجمع المعتمد (Saaa.png):
+            </span>
+            <span class="text-[10px] text-slate-400">رفع صورة بديلة ليتم تعميمها سحابياً على جميع الطلاب</span>
+          </div>
+          <label class="cursor-pointer px-3.5 py-2 rounded-xl bg-emerald-950/10 dark:bg-emerald-500/15 text-[#0F4C3A] dark:text-[#7CE82B] font-extrabold text-[11px] shrink-0">
+            رفع شعار بديل
+            <input type="file" accept="image/*" class="hidden" onchange="handleCustomLogoUpload(event)" />
+          </label>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 dark:border-emerald-800/40 flex items-center justify-between gap-2">
+          <div>
+            <span class="font-extrabold text-rose-600 dark:text-rose-400 block">
+              <i class="fa-solid fa-triangle-exclamation ml-1"></i> تصفير وحذف كل شيء في الموقع:
+            </span>
+            <span class="text-[10px] text-slate-400">حذف جميع الطلاب والسجلات والمحادثات والبيانات بالكامل</span>
+          </div>
+          <button onclick="openFactoryResetModal()" class="px-3.5 py-2 rounded-xl bg-rose-600 text-white font-black text-[11px] shadow shrink-0">
+            حذف الكل
+          </button>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- نافذة تصفير وحذف كل شيء في الموقع (تتطلب التأكيد وإدخال رمز المشرف) -->
+  <div id="factoryResetModal" class="no-print fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-6 w-full max-w-sm shadow-2xl border-2 border-rose-500/40 text-center space-y-4">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-rose-500/15 text-rose-500 flex items-center justify-center text-2xl">
+        <i class="fa-solid fa-skull-crossbones"></i>
+      </div>
+      <div>
+        <h3 class="text-base font-black text-rose-600 dark:text-rose-400">هل أنت متأكد من حذف كل شيء؟</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-300 mt-1.5 leading-relaxed">
+          سيتم حذف جميع الطلاب وسجلاتهم، والمحادثات، والاستبيانات، والتنبيهات نهائياً من السحابة. أدخل <b>الرمز السري للمشرف</b> للتأكيد:
+        </p>
+      </div>
+      <input type="password" id="resetConfirmPinInput" inputmode="numeric" maxlength="8" placeholder="الرمز السري للمشرف"
+        class="w-full py-3 px-4 rounded-2xl bg-slate-50 dark:bg-[#071510] border-2 border-rose-500/30 text-center text-xl tracking-[0.4em] font-black text-slate-900 dark:text-white focus:outline-none" />
+      <div class="grid grid-cols-2 gap-2.5 pt-1">
+        <button onclick="executeFullSiteReset()" class="py-3 rounded-xl bg-rose-600 text-white text-xs font-black shadow-lg">
+          تأكيد الحذف الشامل
+        </button>
+        <button onclick="document.getElementById('factoryResetModal').classList.add('hidden')" class="py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-black">
+          إلغاء
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة الرسائل والاستبيانات والمحادثة الجماعية للمشرف -->
+  <div id="adminCommModal" class="no-print fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl w-full max-w-lg h-[86vh] max-h-[680px] shadow-2xl border border-emerald-500/30 flex flex-col overflow-hidden">
+      <div class="bg-[#0A2E22] text-white px-4 py-3 flex items-center justify-between border-b border-[#65D01E]/30">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-comments text-[#7CE82B]"></i>
+          <h3 class="text-xs sm:text-sm font-black">التواصل • المشرف: منير بن عبد الله آل صادر</h3>
+        </div>
+        <button onclick="document.getElementById('adminCommModal').classList.add('hidden')" class="px-3 py-1 rounded-xl bg-white/15 text-xs font-bold">إغلاق</button>
+      </div>
+
+      <!-- التبويبات الثلاثة -->
+      <div class="grid grid-cols-3 p-2 bg-slate-100 dark:bg-[#071510] gap-1.5 border-b border-slate-200 dark:border-emerald-800/40">
+        <button id="admTabBroadcast" onclick="switchAdminCommTab('broadcast')" class="py-2 rounded-xl text-[11px] font-black bg-[#0F4C3A] text-white">
+          رسائل للطلاب
+        </button>
+        <button id="admTabPoll" onclick="switchAdminCommTab('poll')" class="py-2 rounded-xl text-[11px] font-black text-slate-600 dark:text-slate-300">
+          استبيان / تصويت
+        </button>
+        <button id="admTabGroup" onclick="switchAdminCommTab('group')" class="py-2 rounded-xl text-[11px] font-black text-slate-600 dark:text-slate-300">
+          المحادثة الجماعية
+        </button>
+      </div>
+
+      <!-- 1. تبويب الرسائل الموجهة -->
+      <div id="admBroadcastPanel" class="flex-1 overflow-y-auto p-3.5 space-y-3 bg-[#ECE5DD]/50 dark:bg-[#06120E]">
+        <div class="p-3 rounded-2xl bg-white dark:bg-[#0D241C] border border-emerald-500/25 space-y-2.5 text-xs shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-[#0F4C3A] dark:text-[#7CE82B]">تحديد المستلمين:</span>
+            <label class="flex items-center gap-1.5 font-extrabold cursor-pointer">
+              <input type="checkbox" id="msgSelectAllStudents" checked onchange="toggleAllStudentsRecipient(this.checked)" class="accent-[#16A34A] w-4 h-4" />
+              <span>جميع الطلاب</span>
+            </label>
+          </div>
+
+          <div id="msgStudentsCheckboxes" class="hidden grid grid-cols-2 gap-1.5 max-h-24 overflow-y-auto p-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40"></div>
+
+          <textarea id="adminBroadcastText" rows="2" maxlength="250" placeholder="اكتب رسالتك للطلاب..."
+            class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none"></textarea>
+
+          <button onclick="sendAdminBroadcastMessage()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#0F4C3A] to-[#16A34A] text-white font-black text-xs shadow">
+            <i class="fa-solid fa-paper-plane ml-1"></i> إرسال الرسالة
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-black text-slate-700 dark:text-slate-300">سجل الرسائل والردود:</h4>
+          <button onclick="clearAllDirectMessages()" class="px-2.5 py-1 rounded-lg bg-rose-500/15 text-rose-600 dark:text-rose-400 text-[10px] font-black">
+            <i class="fa-solid fa-trash ml-1"></i> حذف جميع الرسائل
+          </button>
+        </div>
+        <div id="adminSentMessagesList" class="space-y-3"></div>
+      </div>
+
+      <!-- 2. تبويب إنشاء الاستبيان وعرض النتائج -->
+      <div id="admPollPanel" class="hidden flex-1 overflow-y-auto p-3.5 space-y-3 bg-[#ECE5DD]/50 dark:bg-[#06120E]">
+        <div class="p-3.5 rounded-2xl bg-white dark:bg-[#0D241C] border border-amber-500/30 space-y-2.5 text-xs shadow-sm">
+          <h4 class="font-black text-amber-600 dark:text-amber-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-square-poll-vertical"></i> إنشاء استبيان جديد للطلاب
+          </h4>
+          <input type="text" id="pollQuestionInput" maxlength="160" placeholder="اكتب سؤال الاستبيان (مثلاً: هل ودكم نسمع المتن اليوم مغرب؟)"
+            class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-bold text-slate-900 dark:text-white" />
+          
+          <div id="pollOptionsInputsContainer" class="space-y-1.5">
+            <input type="text" class="poll-opt-input w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-semibold" placeholder="الخيار 1 (مثلاً: نعم)" />
+            <input type="text" class="poll-opt-input w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-semibold" placeholder="الخيار 2 (مثلاً: لا)" />
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="addPollOptionField()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-[11px] font-black">
+              + إضافة خيار آخر
+            </button>
+            <button type="button" onclick="publishAdminPoll()" class="flex-1 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 text-white text-xs font-black shadow">
+              نشر الاستبيان للطلاب
+            </button>
+          </div>
+        </div>
+
+        <div id="adminPollsResultsList" class="space-y-2.5"></div>
+      </div>
+
+      <!-- 3. تبويب المحادثة الجماعية -->
+      <div id="admGroupPanel" class="hidden flex-1 flex flex-col overflow-hidden bg-[#ECE5DD]/60 dark:bg-[#06120E]">
+        <div class="px-3.5 py-2 bg-white/80 dark:bg-[#0A1F18] border-b border-slate-200 dark:border-emerald-800/40 flex items-center justify-between text-[11px]">
+          <span class="font-bold text-slate-500">المحادثة الجماعية المباشرة</span>
+          <button onclick="clearAllGroupChat()" class="px-2.5 py-1 rounded-lg bg-rose-500/15 text-rose-600 dark:text-rose-400 font-black">
+            <i class="fa-solid fa-trash ml-1"></i> حذف المحادثة الجماعية
+          </button>
+        </div>
+        <div id="admGroupMessagesList" class="flex-1 overflow-y-auto p-3.5 space-y-2.5"></div>
+        <form onsubmit="event.preventDefault(); sendAdminGroupChatMessage();" class="p-2.5 bg-white dark:bg-[#0A1F18] border-t border-slate-200 dark:border-emerald-800/40 flex items-center gap-2">
+          <input type="text" id="adminGroupChatInput" maxlength="200" placeholder="اكتب رسالتك في المحادثة الجماعية..."
+            class="flex-1 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none" />
+          <button type="submit" class="w-10 h-10 rounded-xl bg-[#16A34A] text-white flex items-center justify-center shadow shrink-0">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة تأكيد حذف طالب -->
+  <div id="deleteConfirmModal" class="no-print fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-6 w-full max-w-sm shadow-2xl border border-rose-500/30 text-center space-y-4">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-rose-500/15 text-rose-500 flex items-center justify-center text-2xl">
+        <i class="fa-solid fa-trash-can"></i>
+      </div>
+      <div>
+        <h3 class="text-base font-black text-slate-900 dark:text-white">تأكيد حذف الطالب</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-300 mt-1.5 leading-relaxed">
+          هل أنت متأكد من حذف الطالب <b id="deleteTargetName" class="text-rose-500">--</b> وجميع سجلاته نهائياً؟
+        </p>
+      </div>
+      <div class="grid grid-cols-2 gap-3 pt-1">
+        <button onclick="confirmDeleteStudent()" class="py-3 rounded-xl bg-rose-600 text-white text-xs font-black shadow-lg">
+          نعم، احذف الطالب
+        </button>
+        <button onclick="document.getElementById('deleteConfirmModal').classList.add('hidden')" class="py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-black">
+          تراجع
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة إصدار كشوف PDF -->
+  <div id="printModalOverlay" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-sm overflow-y-auto p-2 sm:p-5 flex items-start justify-center">
+    <div id="printModalContainer" class="bg-white w-full max-w-6xl rounded-3xl shadow-2xl overflow-hidden my-auto">
+      <div class="no-print bg-[#0A2E22] text-white px-4 py-3 flex flex-wrap items-center justify-between gap-2 border-b border-[#65D01E]/30">
+        <div class="flex items-center gap-2 text-xs font-extrabold flex-wrap">
+          <i class="fa-solid fa-file-pdf text-[#7CE82B] text-sm"></i>
+          <span id="pdfModalModeTitle">إصدار الكشف (A4 أفقي)</span>
+          
+          <select id="pdfReportType" onchange="refreshPrintReport()" class="px-2.5 py-1.5 rounded-lg bg-[#65D01E]/20 text-[#7CE82B] text-xs font-black border border-[#65D01E]/40">
+            <option value="daily" class="text-slate-900">تقرير يومي شامل (جميع الطلاب)</option>
+            <option value="weekly" selected class="text-slate-900">كشف أسبوعي (الخميس - الأربعاء)</option>
+            <option value="monthly" class="text-slate-900">تقرير شهري شامل (4 أسابيع)</option>
+          </select>
+
+          <select id="pdfWeekSelector" onchange="refreshPrintReport()" class="px-2.5 py-1.5 rounded-lg bg-white/15 text-white text-xs font-bold border border-white/20"></select>
+
+          <select id="pdfDaySelector" onchange="refreshPrintReport()" class="hidden px-2.5 py-1.5 rounded-lg bg-amber-500/25 text-amber-200 text-xs font-black border border-amber-400/40">
+            <option value="thu" class="text-slate-900">الخميس</option>
+            <option value="fri" class="text-slate-900">الجمعة</option>
+            <option value="sat" class="text-slate-900">السبت</option>
+            <option value="sun" class="text-slate-900">الأحد</option>
+            <option value="mon" class="text-slate-900">الإثنين</option>
+            <option value="tue" class="text-slate-900">الثلاثاء</option>
+            <option value="wed" class="text-slate-900">الأربعاء</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#65D01E] to-[#16A34A] text-[#051B14] font-black text-xs shadow-lg flex items-center gap-1.5">
+            <i class="fa-solid fa-print"></i> <span>طباعة / حفظ كملف PDF</span>
+          </button>
+          <button onclick="document.getElementById('printModalOverlay').classList.add('hidden')" class="px-3 py-2 rounded-xl bg-white/10 text-white text-xs font-bold">إغلاق</button>
+        </div>
+      </div>
+
+      <div id="printBgWrapper" class="p-3 sm:p-6 bg-slate-200 space-y-6 overflow-x-auto"></div>
+    </div>
+  </div>
+
+  <!-- نافذة تغيير رمز المشرف -->
+  <div id="changeAdminPinModal" class="no-print fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-5 w-full max-w-xs shadow-2xl border border-emerald-500/25 space-y-3 text-center">
+      <h3 class="text-sm font-black text-slate-900 dark:text-white">تغيير الرقم السري للمشرف</h3>
+      <input type="tel" id="newAdminPinInput" inputmode="numeric" maxlength="8" placeholder="الرمز السري الجديد"
+        class="w-full py-2.5 px-3 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-center text-lg font-black text-slate-900 dark:text-white" />
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="saveNewAdminPin()" class="py-2.5 rounded-xl bg-[#0F4C3A] text-white text-xs font-black">حفظ الرمز</button>
+        <button onclick="document.getElementById('changeAdminPinModal').classList.add('hidden')" class="py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة تعديل بيانات الطالب -->
+  <div id="editStudentModal" class="no-print fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-emerald-500/25 space-y-3">
+      <h3 class="text-sm font-black text-slate-900 dark:text-white text-center">تعديل بيانات الطالب</h3>
+      <input type="hidden" id="editStudentModalId" />
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 mb-1">اسم الطالب:</label>
+        <input type="text" id="editStudentNameInput" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-bold text-slate-900 dark:text-white" />
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 mb-1">اسم المتن:</label>
+        <input type="text" id="editStudentMatnInput" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-bold text-slate-900 dark:text-white" />
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 mb-1">المستوى (اختياري):</label>
+        <select id="editStudentLevelSelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-bold text-slate-900 dark:text-white">
+          <option value="">بدون مستوى</option>
+          <option value="المستوى الأول">المستوى الأول</option>
+          <option value="المستوى الثاني">المستوى الثاني</option>
+          <option value="المستوى الثالث">المستوى الثالث</option>
+          <option value="المستوى الرابع">المستوى الرابع</option>
+          <option value="المستوى الخامس">المستوى الخامس</option>
+          <option value="المستوى السادس">المستوى السادس</option>
+          <option value="المستوى السابع">المستوى السابع</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 mb-1">كود دخول الطالب:</label>
+        <input type="tel" id="editStudentCodeInput" inputmode="numeric" maxlength="6" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-black text-slate-900 dark:text-white" />
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-2">
+        <button onclick="saveEditedStudentData()" class="py-3 rounded-xl bg-[#0F4C3A] text-white text-xs font-black">حفظ التعديلات</button>
+        <button onclick="document.getElementById('editStudentModal').classList.add('hidden')" class="py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة المشرف: رصد أو تعديل يوم للطالب -->
+  <div id="adminEditDayModal" class="no-print fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-emerald-500/30 space-y-3 my-auto">
+      <div class="text-center border-b border-slate-100 dark:border-emerald-800/40 pb-2.5">
+        <h3 class="text-sm font-black text-slate-900 dark:text-white">رصد / تعديل يوم للطالب</h3>
+        <p id="adminEditDaySubtitle" class="text-xs font-bold text-[#16A34A] mt-0.5">--</p>
+      </div>
+
+      <input type="hidden" id="editDayStuId" />
+      <input type="hidden" id="editDayWeekId" />
+      <input type="hidden" id="editDayKey" />
+
+      <div class="space-y-2 text-xs">
+        <div class="flex justify-between items-center bg-slate-50 dark:bg-[#071510] p-2.5 rounded-xl">
+          <span class="font-bold">الحفظ الجديد:</span>
+          <select id="edMem" class="px-2.5 py-1 rounded-lg bg-white dark:bg-[#0D241C] border border-slate-200 dark:border-emerald-700/40 font-black"><option value="نعم">نعم</option><option value="لا">لا</option></select>
+        </div>
+        <div class="flex justify-between items-center bg-slate-50 dark:bg-[#071510] p-2.5 rounded-xl">
+          <span class="font-bold">مقدار الحفظ:</span>
+          <select id="edMemAmount" class="px-2.5 py-1 rounded-lg bg-white dark:bg-[#0D241C] border border-slate-200 dark:border-emerald-700/40 font-black">
+            <option value="صفحة">صفحة</option>
+            <option value="نصف صفحة">نصف صفحة</option>
+            <option value="صفحة ونصف">صفحة ونصف</option>
+            <option value="صفحتان">صفحتان</option>
+            <option value="صفحتان ونصف">صفحتان ونصف</option>
+            <option value="ثلاث صفحات">ثلاث صفحات</option>
+          </select>
+        </div>
+        <div class="flex justify-between items-center bg-slate-50 dark:bg-[#071510] p-2.5 rounded-xl">
+          <span class="font-bold">مقدار التكرار:</span>
+          <select id="edRep" class="px-2.5 py-1 rounded-lg bg-white dark:bg-[#0D241C] border border-slate-200 dark:border-emerald-700/40 font-black"><option value="نعم">نعم</option><option value="لا">لا</option></select>
+        </div>
+        <div class="flex justify-between items-center bg-slate-50 dark:bg-[#071510] p-2.5 rounded-xl">
+          <span class="font-bold">تكرار الأمس:</span>
+          <select id="edYes" class="px-2.5 py-1 rounded-lg bg-white dark:bg-[#0D241C] border border-slate-200 dark:border-emerald-700/40 font-black"><option value="نعم">نعم</option><option value="لا">لا</option></select>
+        </div>
+        <div class="flex justify-between items-center bg-slate-50 dark:bg-[#071510] p-2.5 rounded-xl">
+          <span class="font-bold">الربط العام:</span>
+          <select id="edLnk" class="px-2.5 py-1 rounded-lg bg-white dark:bg-[#0D241C] border border-slate-200 dark:border-emerald-700/40 font-black"><option value="نعم">نعم</option><option value="لا">لا</option></select>
+        </div>
+        <div class="flex justify-between items-center bg-slate-50 dark:bg-[#071510] p-2.5 rounded-xl">
+          <span class="font-bold">المراجعة:</span>
+          <select id="edRev" class="px-2.5 py-1 rounded-lg bg-white dark:bg-[#0D241C] border border-slate-200 dark:border-emerald-700/40 font-black"><option value="نعم">نعم</option><option value="لا">لا</option></select>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-rose-500 mb-1">العذر (اختياري):</label>
+          <input type="text" id="edExcuse" maxlength="16" placeholder="مريض، مسافر..." class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-rose-500/30 text-xs font-semibold text-slate-900 dark:text-white" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 pt-2">
+        <button onclick="saveAdminEditedDay()" class="py-3 rounded-xl bg-[#0F4C3A] text-white text-xs font-black">حفظ واعتماد</button>
+        <button onclick="document.getElementById('adminEditDayModal').classList.add('hidden')" class="py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toastBox" class="no-print fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300 bg-[#0A2E22] text-white border border-[#65D01E]/40 px-4 py-2.5 rounded-2xl shadow-2xl text-xs font-extrabold flex items-center gap-2">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-[#7CE82B]"></i>
+    <span id="toastText">تم</span>
+  </div>
+
+  <script>
+    document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+    document.addEventListener('dblclick', function(e) { e.preventDefault(); }, { passive: false });
+
+    const FIREBASE_DB_URL = "https://shetibi-moton-tracker-default-rtdb.firebaseio.com";
+    const DEFAULT_LOGO_PATH = "Saaa.png";
+
+    const ALL_WEEK_DAYS = [
+      { key: 'thu', idx: 4, ar: 'الخميس', offsetFromThu: 0, optional: false },
+      { key: 'fri', idx: 5, ar: 'الجمعة', offsetFromThu: 1, optional: true },
+      { key: 'sat', idx: 6, ar: 'السبت', offsetFromThu: 2, optional: true },
+      { key: 'sun', idx: 0, ar: 'الأحد', offsetFromThu: 3, optional: false },
+      { key: 'mon', idx: 1, ar: 'الإثنين', offsetFromThu: 4, optional: false },
+      { key: 'tue', idx: 2, ar: 'الثلاثاء', offsetFromThu: 5, optional: false },
+      { key: 'wed', idx: 3, ar: 'الأربعاء', offsetFromThu: 6, optional: false }
+    ];
+
+    let state = {
+      theme: localStorage.getItem('shatibi_theme') || 'dark',
+      adminPin: "1234",
+      cloudLogoUrl: null,
+      serverTimeOffsetMs: 0,
+      studentsCache: [],
+      forgotAlerts: [],
+      adminMessages: [],
+      pollsList: [],
+      groupMessages: [],
+      lastAlertCount: 0,
+      printMode: 'single',
+      activePrintStudentId: null,
+      pendingDeleteStudentId: null
+    };
+
+    function playNotificationTone() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.18);
+      } catch (e) {}
+    }
+
+    async function syncServerTime() {
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/.info/serverTimeOffset.json`);
+        if (res.ok) {
+          const offset = await res.json();
+          if (typeof offset === 'number') {
+            state.serverTimeOffsetMs = offset;
+            return;
+          }
+        }
+        const headRes = await fetch(`${FIREBASE_DB_URL}/settings.json`, { method: 'HEAD' });
+        const serverDateStr = headRes.headers.get('date');
+        if (serverDateStr) {
+          const serverMs = new Date(serverDateStr).getTime();
+          if (!isNaN(serverMs)) state.serverTimeOffsetMs = serverMs - Date.now();
+        }
+      } catch (e) {}
+    }
+
+    function getTrustedNow() {
+      return new Date(Date.now() + state.serverTimeOffsetMs);
+    }
+
+    function formatHijriDate(dateObj, includeYear = true) {
+      const opts = includeYear
+        ? { year: 'numeric', month: '2-digit', day: '2-digit' }
+        : { month: '2-digit', day: '2-digit' };
+      return dateObj.toLocaleDateString('ar-SA-u-ca-islamic-umalqura', opts);
+    }
+
+    function getCurrentWeekContext() {
+      const now = getTrustedNow();
+      const dayNum = now.getDay();
+      const daysSinceThursday = (dayNum - 4 + 7) % 7;
+      const thursdayStart = new Date(now);
+      thursdayStart.setDate(now.getDate() - daysSinceThursday);
+
+      const wednesdayEnd = new Date(thursdayStart);
+      wednesdayEnd.setDate(thursdayStart.getDate() + 6);
+
+      const weekId = `W_${thursdayStart.getFullYear()}_${String(thursdayStart.getMonth() + 1).padStart(2, '0')}_${String(thursdayStart.getDate()).padStart(2, '0')}`;
+      const startHijri = formatHijriDate(thursdayStart, false);
+      const endHijri = formatHijriDate(wednesdayEnd, true);
+      const weekLabel = `أسبوع (${startHijri} إلى ${endHijri})`;
+      const monthName = thursdayStart.toLocaleDateString('ar-SA-u-ca-islamic-umalqura', { month: 'long', year: 'numeric' });
+
+      const dayDatesMap = {};
+      ALL_WEEK_DAYS.forEach(d => {
+        const dt = new Date(thursdayStart);
+        dt.setDate(thursdayStart.getDate() + d.offsetFromThu);
+        dayDatesMap[d.key] = formatHijriDate(dt, true);
+      });
+
+      const dayObj = ALL_WEEK_DAYS.find(d => d.idx === dayNum);
+      return {
+        weekId,
+        weekLabel,
+        monthName,
+        dayDatesMap,
+        key: dayObj ? dayObj.key : 'thu',
+        todayHijri: formatHijriDate(now, true)
+      };
+    }
+
+    function renderLogos() {
+      const src = state.cloudLogoUrl || DEFAULT_LOGO_PATH;
+      const html = `<img src="${src}" alt="شعار مجمع الإمام الشاطبي" class="w-full h-full object-contain rounded-xl" />`;
+      ['headerLogoBox', 'loginLogoBox'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = html;
+      });
+    }
+
+    async function syncAllData(showNotify = false) {
+      const dot = document.getElementById('cloudStatusDot');
+      dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse';
+
+      try {
+        await syncServerTime();
+        const [stuRes, setRes, altRes, msgRes, pollRes, grpRes] = await Promise.all([
+          fetch(`${FIREBASE_DB_URL}/students.json`),
+          fetch(`${FIREBASE_DB_URL}/settings.json`),
+          fetch(`${FIREBASE_DB_URL}/forgotAlerts.json`),
+          fetch(`${FIREBASE_DB_URL}/adminMessages.json`),
+          fetch(`${FIREBASE_DB_URL}/polls.json`),
+          fetch(`${FIREBASE_DB_URL}/groupChat.json`)
+        ]);
+
+        const stuData = await stuRes.json();
+        const setData = await setRes.json();
+        const altData = await altRes.json();
+        const msgData = await msgRes.json();
+        const pollData = await pollRes.json();
+        const grpData = await grpRes.json();
+
+        if (setData) {
+          if (setData.adminPin) state.adminPin = String(setData.adminPin);
+          if (setData.logo) state.cloudLogoUrl = setData.logo;
+        }
+        renderLogos();
+
+        const validList = [];
+        if (stuData && typeof stuData === 'object') {
+          for (const [key, item] of Object.entries(stuData)) {
+            if (!item || !item.id || !item.name || String(item.name).includes('undefined')) {
+              fetch(`${FIREBASE_DB_URL}/students/${key}.json`, { method: 'DELETE' }).catch(() => {});
+            } else {
+              validList.push(item);
+            }
+          }
+        }
+        state.studentsCache = validList;
+
+        const newAlerts = (altData && typeof altData === 'object') ? Object.values(altData).filter(Boolean) : [];
+        if (newAlerts.length > state.lastAlertCount && !document.getElementById('adminDashboardView').classList.contains('hidden')) {
+          playNotificationTone();
+          showToast('وصل طلب استئذان جديد من أحد الطلاب!');
+        }
+        state.lastAlertCount = newAlerts.length;
+        state.forgotAlerts = newAlerts;
+
+        state.adminMessages = (msgData && typeof msgData === 'object')
+          ? Object.values(msgData).filter(Boolean).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
+          : [];
+
+        state.pollsList = (pollData && typeof pollData === 'object')
+          ? Object.values(pollData).filter(Boolean).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
+          : [];
+
+        state.groupMessages = (grpData && typeof grpData === 'object')
+          ? Object.values(grpData).filter(Boolean).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))
+          : [];
+
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-[#65D01E]';
+        if (showNotify) showToast('تم التحديث والمزامنة بنجاح');
+      } catch (err) {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
+        if (showNotify) showToast('تعذر الاتصال بالإنترنت، تحقق من الشبكة', 'error');
+      }
+
+      if (!document.getElementById('adminDashboardView').classList.contains('hidden')) {
+        populateWeekFilter();
+        renderForgotAlerts();
+        renderStudentsList();
+        if (!document.getElementById('adminCommModal').classList.contains('hidden')) {
+          await markStudentMessagesAsSeen();
+          renderAdminSentMessages();
+          renderAdminPollsList();
+          renderAdminGroupChat();
+        }
+      }
+    }
+
+    async function markStudentMessagesAsSeen() {
+      const updates = [];
+      state.adminMessages.forEach(m => {
+        if (m.replies && typeof m.replies === 'object') {
+          Object.entries(m.replies).forEach(([rId, r]) => {
+            if (r && !r.seenByAdmin) {
+              r.seenByAdmin = true;
+              updates.push(
+                fetch(`${FIREBASE_DB_URL}/adminMessages/${m.id}/replies/${rId}/seenByAdmin.json`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(true)
+                }).catch(() => {})
+              );
+            }
+          });
+        }
+      });
+      state.groupMessages.forEach(g => {
+        if (!g.isAdmin && (!g.seenBy || !g.seenBy.admin)) {
+          if (!g.seenBy) g.seenBy = {};
+          g.seenBy.admin = true;
+          updates.push(
+            fetch(`${FIREBASE_DB_URL}/groupChat/${g.id}/seenBy/admin.json`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(true)
+            }).catch(() => {})
+          );
+        }
+      });
+      if (updates.length) await Promise.all(updates);
+    }
+
+    async function verifyAdminLogin(e) {
+      e.preventDefault();
+      const entered = document.getElementById('adminPinInput').value.trim();
+      const btn = document.getElementById('btnAdminLogin');
+      btn.disabled = true;
+
+      await syncAllData(false);
+
+      if (entered === state.adminPin) {
+        document.getElementById('adminLoginView').classList.add('hidden');
+        document.getElementById('adminDashboardView').classList.remove('hidden');
+
+        const weekCtx = getCurrentWeekContext();
+        document.getElementById('supCurrentWeekInfo').textContent = weekCtx.weekLabel;
+        if (weekCtx.key) document.getElementById('supDayFilter').value = weekCtx.key;
+
+        populateWeekFilter();
+        renderForgotAlerts();
+        renderStudentsList();
+
+        if (!window._autoSyncTimer) {
+          window._autoSyncTimer = setInterval(() => syncAllData(false), 12000);
+        }
+      } else {
+        showToast('الرقم السري غير صحيح', 'error');
+      }
+      btn.disabled = false;
+    }
+
+    function openChangeAdminPinModal() {
+      document.getElementById('newAdminPinInput').value = '';
+      document.getElementById('changeAdminPinModal').classList.remove('hidden');
+    }
+
+    async function saveNewAdminPin() {
+      const newPin = document.getElementById('newAdminPinInput').value.trim();
+      if (newPin.length < 4) {
+        showToast('أدخل رقماً سرياً من 4 أرقام على الأقل', 'error');
+        return;
+      }
+      try {
+        await fetch(`${FIREBASE_DB_URL}/settings/adminPin.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newPin)
+        });
+        state.adminPin = newPin;
+        document.getElementById('changeAdminPinModal').classList.add('hidden');
+        showToast('تم تغيير الرقم السري للمشرف بنجاح!');
+      } catch (err) {
+        showToast('تعذر الحفظ', 'error');
+      }
+    }
+
+    function openFactoryResetModal() {
+      document.getElementById('resetConfirmPinInput').value = '';
+      document.getElementById('factoryResetModal').classList.remove('hidden');
+    }
+
+    async function executeFullSiteReset() {
+      const enteredPin = document.getElementById('resetConfirmPinInput').value.trim();
+      if (enteredPin !== state.adminPin) {
+        showToast('الرمز السري للمشرف غير صحيح!', 'error');
+        return;
+      }
+
+      try {
+        await Promise.all([
+          fetch(`${FIREBASE_DB_URL}/students.json`, { method: 'DELETE' }),
+          fetch(`${FIREBASE_DB_URL}/forgotAlerts.json`, { method: 'DELETE' }),
+          fetch(`${FIREBASE_DB_URL}/adminMessages.json`, { method: 'DELETE' }),
+          fetch(`${FIREBASE_DB_URL}/polls.json`, { method: 'DELETE' }),
+          fetch(`${FIREBASE_DB_URL}/groupChat.json`, { method: 'DELETE' })
+        ]);
+
+        state.studentsCache = [];
+        state.forgotAlerts = [];
+        state.adminMessages = [];
+        state.pollsList = [];
+        state.groupMessages = [];
+        state.lastAlertCount = 0;
+
+        document.getElementById('factoryResetModal').classList.add('hidden');
+        renderForgotAlerts();
+        renderStudentsList();
+        showToast('تم حذف وتصفير جميع بيانات الموقع بالكامل');
+      } catch (e) {
+        showToast('تعذر الحذف، تحقق من الشبكة', 'error');
+      }
+    }
+
+    function toggleCustomLevelInput() {
+      const val = document.getElementById('supNewLevel').value;
+      const inp = document.getElementById('supNewCustomLevel');
+      if (val === 'CUSTOM') inp.classList.remove('hidden');
+      else inp.classList.add('hidden');
+    }
+
+    function generateUniqueStudentCode() {
+      const existingCodes = new Set(state.studentsCache.map(s => String(s.code)));
+      let code;
+      do {
+        code = String(Math.floor(1000 + Math.random() * 9000));
+      } while (existingCodes.has(code));
+      return code;
+    }
+
+    async function adminAddStudent() {
+      const name = document.getElementById('supNewName').value.trim();
+      const matn = document.getElementById('supNewMatn').value.trim();
+      const lvlSel = document.getElementById('supNewLevel').value;
+      const customLvl = document.getElementById('supNewCustomLevel').value.trim();
+      const level = lvlSel === 'CUSTOM' ? customLvl : lvlSel;
+      const manualCode = document.getElementById('supNewCode').value.trim();
+
+      if (!name || !matn) {
+        showToast('اكتب اسم الطالب واسم المتن أولاً', 'error');
+        return;
+      }
+
+      const code = manualCode || generateUniqueStudentCode();
+      if (state.studentsCache.some(s => String(s.code) === code)) {
+        showToast('هذا الكود مستخدم لطالب آخر، اختر غيره', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btnAddStudent');
+      btn.disabled = true;
+
+      const newStu = {
+        id: 'stu_' + Date.now(),
+        name,
+        matn,
+        level: level || '',
+        code,
+        weeks: {}
+      };
+
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/students/${newStu.id}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newStu)
+        });
+        if (!res.ok) throw new Error('Network error');
+
+        state.studentsCache.push(newStu);
+        document.getElementById('supNewName').value = '';
+        document.getElementById('supNewMatn').value = '';
+        document.getElementById('supNewLevel').value = '';
+        document.getElementById('supNewCode').value = '';
+        document.getElementById('supNewCustomLevel').classList.add('hidden');
+
+        renderStudentsList();
+        showToast(`تمت إضافة الطالب (${name}) — الكود: ${code}`);
+      } catch (err) {
+        showToast('تعذرت الإضافة: تأكد من تفعيل Rules في Firebase', 'error');
+      }
+      btn.disabled = false;
+    }
+
+    function openEditStudentModal(id) {
+      const stu = state.studentsCache.find(s => s.id === id);
+      if (!stu) return;
+      document.getElementById('editStudentModalId').value = stu.id;
+      document.getElementById('editStudentNameInput').value = stu.name;
+      document.getElementById('editStudentMatnInput').value = stu.matn;
+      document.getElementById('editStudentLevelSelect').value = stu.level || '';
+      document.getElementById('editStudentCodeInput').value = stu.code || '';
+      document.getElementById('editStudentModal').classList.remove('hidden');
+    }
+
+    async function saveEditedStudentData() {
+      const id = document.getElementById('editStudentModalId').value;
+      const name = document.getElementById('editStudentNameInput').value.trim();
+      const matn = document.getElementById('editStudentMatnInput').value.trim();
+      const level = document.getElementById('editStudentLevelSelect').value;
+      const code = document.getElementById('editStudentCodeInput').value.trim();
+
+      if (!name || !matn || !code) {
+        showToast('أدخل اسم الطالب واسم المتن والكود', 'error');
+        return;
+      }
+
+      if (state.studentsCache.some(s => s.id !== id && String(s.code) === code)) {
+        showToast('هذا الكود مستخدم لطالب آخر', 'error');
+        return;
+      }
+
+      const stu = state.studentsCache.find(s => s.id === id);
+      if (!stu) return;
+      stu.name = name;
+      stu.matn = matn;
+      stu.level = level;
+      stu.code = code;
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/students/${stu.id}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(stu)
+        });
+        document.getElementById('editStudentModal').classList.add('hidden');
+        renderStudentsList();
+        showToast('تم تحديث بيانات الطالب وكوده بنجاح');
+      } catch (err) {
+        showToast('تعذر الحفظ', 'error');
+      }
+    }
+
+    function requestDeleteStudent(id, name) {
+      state.pendingDeleteStudentId = id;
+      document.getElementById('deleteTargetName').textContent = name;
+      document.getElementById('deleteConfirmModal').classList.remove('hidden');
+    }
+
+    async function confirmDeleteStudent() {
+      const id = state.pendingDeleteStudentId;
+      if (!id) return;
+      try {
+        await fetch(`${FIREBASE_DB_URL}/students/${id}.json`, { method: 'DELETE' });
+        state.studentsCache = state.studentsCache.filter(s => s.id !== id);
+        document.getElementById('deleteConfirmModal').classList.add('hidden');
+        state.pendingDeleteStudentId = null;
+        renderStudentsList();
+        showToast('تم حذف الطالب بنجاح');
+      } catch (err) {
+        showToast('تعذر الحذف', 'error');
+      }
+    }
+
+    function copyStudentCode(name, code) {
+      const text = `تطبيق متابعة المتون العلمية - مجمع الإمام الشاطبي\nالطالب: ${name}\nكود الدخول الخاص بك: ${code}`;
+      if (navigator.clipboard) navigator.clipboard.writeText(text);
+      showToast(`تم نسخ كود الطالب (${code})`);
+    }
+
+    async function approveForgotAlertDirect(alertId) {
+      const alt = state.forgotAlerts.find(a => a.id === alertId);
+      if (!alt) return;
+      const stu = state.studentsCache.find(s => s.id === alt.studentId);
+      if (!stu) {
+        await dismissAlert(alertId);
+        return;
+      }
+
+      const weekCtx = getCurrentWeekContext();
+      if (!stu.weeks) stu.weeks = {};
+      if (!stu.weeks[alt.weekId]) {
+        stu.weeks[alt.weekId] = { label: alt.weekLabel || weekCtx.weekLabel, monthName: weekCtx.monthName, dayDatesMap: weekCtx.dayDatesMap, days: {} };
+      }
+
+      const existing = stu.weeks[alt.weekId].days[alt.dayKey] || {};
+      const dateStr = alt.hijriDate || existing.date || (stu.weeks[alt.weekId].dayDatesMap && stu.weeks[alt.weekId].dayDatesMap[alt.dayKey]) || weekCtx.dayDatesMap[alt.dayKey] || weekCtx.todayHijri;
+
+      stu.weeks[alt.weekId].days[alt.dayKey] = {
+        date: dateStr,
+        memorization: alt.memorization || 'نعم',
+        memAmount: alt.memAmount || 'صفحة',
+        repetition: alt.repetition || 'نعم',
+        yesterday: alt.yesterday || 'نعم',
+        linking: alt.linking || 'نعم',
+        revision: alt.revision || 'نعم',
+        excuse: alt.excuse || '',
+        note: existing.note || '',
+        submitted: true,
+        time: 'معتمد من المشرف'
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/students/${stu.id}/weeks/${alt.weekId}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(stu.weeks[alt.weekId])
+        });
+        await dismissAlert(alertId);
+        renderStudentsList();
+        showToast(`تم الإذن واعتماد يوم (${alt.dayAr}) للطالب ${stu.name}`);
+      } catch (err) {
+        showToast('تعذر الاعتماد، تحقق من الشبكة', 'error');
+      }
+    }
+
+    function renderForgotAlerts() {
+      const container = document.getElementById('forgotAlertsContainer');
+      if (!state.forgotAlerts || state.forgotAlerts.length === 0) {
+        container.classList.add('hidden');
+        container.innerHTML = '';
+        return;
+      }
+      container.classList.remove('hidden');
+      container.innerHTML = state.forgotAlerts.map(alt => `
+        <div class="p-3.5 rounded-2xl bg-amber-500/15 border border-amber-500/40 space-y-2.5 text-xs">
+          <div>
+            <p class="font-black text-amber-800 dark:text-amber-200"><i class="fa-solid fa-bell text-amber-500 ml-1"></i> ${alt.studentName} يطلب الإذن لرصد يوم <b>${alt.dayAr}</b> ${alt.hijriDate ? `(${alt.hijriDate})` : ''}</p>
+            <p class="text-[11px] text-slate-600 dark:text-amber-100/80 mt-0.5">${alt.details}</p>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="approveForgotAlertDirect('${alt.id}')" class="py-2 rounded-xl bg-[#16A34A] text-white font-black text-xs shadow">
+              <i class="fa-solid fa-check ml-1"></i> الإذن والاعتماد
+            </button>
+            <button onclick="dismissAlert('${alt.id}')" class="py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-xs font-bold">رفض الطلب</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function dismissAlert(alertId) {
+      await fetch(`${FIREBASE_DB_URL}/forgotAlerts/${alertId}.json`, { method: 'DELETE' });
+      state.forgotAlerts = state.forgotAlerts.filter(a => a.id !== alertId);
+      renderForgotAlerts();
+    }
+
+    function openAdminEditDayModal(studentId, weekId, dayKey) {
+      const stu = state.studentsCache.find(s => s.id === studentId);
+      if (!stu) return;
+      const dayObj = ALL_WEEK_DAYS.find(d => d.key === dayKey);
+      const rec = (stu.weeks && stu.weeks[weekId] && stu.weeks[weekId].days && stu.weeks[weekId].days[dayKey]) || {};
+
+      document.getElementById('editDayStuId').value = studentId;
+      document.getElementById('editDayWeekId').value = weekId;
+      document.getElementById('editDayKey').value = dayKey;
+      document.getElementById('adminEditDaySubtitle').textContent = `${stu.name} • يوم ${dayObj ? dayObj.ar : dayKey}`;
+
+      document.getElementById('edMem').value = rec.memorization || 'نعم';
+      document.getElementById('edMemAmount').value = rec.memAmount || 'صفحة';
+      document.getElementById('edRep').value = rec.repetition || 'نعم';
+      document.getElementById('edYes').value = rec.yesterday || 'نعم';
+      document.getElementById('edLnk').value = rec.linking || 'نعم';
+      document.getElementById('edRev').value = rec.revision || 'نعم';
+      document.getElementById('edExcuse').value = rec.excuse || '';
+
+      document.getElementById('adminEditDayModal').classList.remove('hidden');
+    }
+
+    async function saveAdminEditedDay() {
+      const stuId = document.getElementById('editDayStuId').value;
+      const weekId = document.getElementById('editDayWeekId').value;
+      const dayKey = document.getElementById('editDayKey').value;
+
+      const stu = state.studentsCache.find(s => s.id === stuId);
+      if (!stu) return;
+
+      const weekCtx = getCurrentWeekContext();
+      if (!stu.weeks) stu.weeks = {};
+      if (!stu.weeks[weekId]) {
+        stu.weeks[weekId] = { label: weekCtx.weekLabel, monthName: weekCtx.monthName, dayDatesMap: weekCtx.dayDatesMap, days: {} };
+      }
+
+      const existing = stu.weeks[weekId].days[dayKey] || {};
+      const dateStr = existing.date || (stu.weeks[weekId].dayDatesMap && stu.weeks[weekId].dayDatesMap[dayKey]) || weekCtx.dayDatesMap[dayKey] || weekCtx.todayHijri;
+
+      stu.weeks[weekId].days[dayKey] = {
+        date: dateStr,
+        memorization: document.getElementById('edMem').value,
+        memAmount: document.getElementById('edMem').value === 'نعم' ? document.getElementById('edMemAmount').value : '',
+        repetition: document.getElementById('edRep').value,
+        yesterday: document.getElementById('edYes').value,
+        linking: document.getElementById('edLnk').value,
+        revision: document.getElementById('edRev').value,
+        excuse: document.getElementById('edExcuse').value.trim(),
+        note: existing.note || '',
+        submitted: true,
+        time: 'رصد المشرف'
+      };
+
+      await fetch(`${FIREBASE_DB_URL}/students/${stu.id}/weeks/${weekId}.json`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(stu.weeks[weekId])
+      });
+
+      document.getElementById('adminEditDayModal').classList.add('hidden');
+      renderStudentsList();
+      showToast('تم حفظ وتعديل اليوم بنجاح');
+    }
+
+    function populateWeekFilter() {
+      const weekCtx = getCurrentWeekContext();
+      const map = new Map();
+      map.set(weekCtx.weekId, weekCtx.weekLabel);
+      state.studentsCache.forEach(s => {
+        if (s.weeks) Object.entries(s.weeks).forEach(([id, w]) => map.set(id, w.label || id));
+      });
+      const sel = document.getElementById('supWeekFilter');
+      const prev = sel.value;
+      sel.innerHTML = '';
+      map.forEach((lbl, id) => {
+        const o = document.createElement('option');
+        o.value = id; o.textContent = lbl;
+        sel.appendChild(o);
+      });
+      sel.value = map.has(prev) ? prev : weekCtx.weekId;
+    }
+
+    function renderStudentsList() {
+      const selectedWeek = document.getElementById('supWeekFilter').value || getCurrentWeekContext().weekId;
+      const selectedDay = document.getElementById('supDayFilter').value;
+      const container = document.getElementById('supervisorStudentsContainer');
+      container.innerHTML = '';
+
+      document.getElementById('supTotalStudents').textContent = state.studentsCache.length;
+
+      if (state.studentsCache.length === 0) {
+        container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400 font-bold">لا يوجد طلاب مسجلون بعد.</div>`;
+        return;
+      }
+
+      const memBadge = (r) => {
+        if (r.memorization === 'نعم') {
+          const amt = r.memAmount || 'صفحة';
+          return `<span class="px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-[#7CE82B] font-black">${amt}</span>`;
+        }
+        return r.memorization === 'لا'
+          ? `<span class="px-1.5 py-0.5 rounded bg-rose-500/15 text-rose-500 font-black">لا</span>`
+          : `<span class="text-slate-400">—</span>`;
+      };
+
+      const badge = (v) => v === 'نعم'
+        ? `<span class="px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-[#7CE82B] font-black">نعم</span>`
+        : (v === 'لا' ? `<span class="px-1.5 py-0.5 rounded bg-rose-500/15 text-rose-500 font-black">لا</span>` : `<span class="text-slate-400">—</span>`);
+
+      state.studentsCache.forEach(stu => {
+        const rec = (stu.weeks && stu.weeks[selectedWeek] && stu.weeks[selectedWeek].days && stu.weeks[selectedWeek].days[selectedDay]) || {};
+        const card = document.createElement('div');
+        card.className = 'p-4 space-y-2.5';
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-2.5">
+            <div class="min-w-0 space-y-1">
+              <h4 class="text-sm font-black text-slate-900 dark:text-white leading-snug">${stu.name}</h4>
+              <p class="text-[11px] font-bold text-[#0F4C3A] dark:text-[#7CE82B] truncate">
+                ${stu.matn} ${stu.level ? `• <span class="text-slate-400">${stu.level}</span>` : ''}
+              </p>
+              <div>
+                <button onclick="copyStudentCode('${stu.name}', '${stu.code}')" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] border border-[#65D01E]/30 font-mono text-[11px] font-black">
+                  <i class="fa-solid fa-key text-[9px]"></i>
+                  <span>كود الدخول: ${stu.code}</span>
+                  <i class="fa-regular fa-copy text-[10px]"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-1.5 shrink-0">
+              <button onclick="openAdminEditDayModal('${stu.id}', '${selectedWeek}', '${selectedDay}')" title="رصد اليوم"
+                class="w-11 h-10 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/30 flex flex-col items-center justify-center active:scale-95">
+                <i class="fa-solid fa-pen-to-square text-[11px]"></i>
+                <span class="text-[9px] font-black mt-0.5">رصد</span>
+              </button>
+              <button onclick="openEditStudentModal('${stu.id}')" title="تعديل البيانات"
+                class="w-11 h-10 rounded-xl bg-sky-500/15 text-sky-600 dark:text-sky-300 border border-sky-500/30 flex flex-col items-center justify-center active:scale-95">
+                <i class="fa-solid fa-user-pen text-[11px]"></i>
+                <span class="text-[9px] font-black mt-0.5">تعديل</span>
+              </button>
+              <button onclick="openPdfModal('${stu.id}', '${selectedWeek}')" title="إصدار PDF"
+                class="w-11 h-10 rounded-xl bg-[#0A2E22] text-white border border-[#65D01E]/30 flex flex-col items-center justify-center shadow active:scale-95">
+                <i class="fa-solid fa-file-pdf text-[#7CE82B] text-[11px]"></i>
+                <span class="text-[9px] font-black mt-0.5">PDF</span>
+              </button>
+              <button onclick="requestDeleteStudent('${stu.id}', '${stu.name}')" title="حذف الطالب"
+                class="w-11 h-10 rounded-xl bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 flex flex-col items-center justify-center active:scale-95">
+                <i class="fa-solid fa-trash-can text-[11px]"></i>
+                <span class="text-[9px] font-black mt-0.5">حذف</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-5 gap-1 text-center text-[11px] bg-slate-100/80 dark:bg-[#071510] p-2 rounded-xl">
+            <div><span class="block text-slate-400 text-[10px] mb-0.5">الحفظ</span>${memBadge(rec)}</div>
+            <div><span class="block text-slate-400 text-[10px] mb-0.5">التكرار</span>${badge(rec.repetition)}</div>
+            <div><span class="block text-slate-400 text-[10px] mb-0.5">الأمس</span>${badge(rec.yesterday)}</div>
+            <div><span class="block text-slate-400 text-[10px] mb-0.5">الربط</span>${badge(rec.linking)}</div>
+            <div><span class="block text-slate-400 text-[10px] mb-0.5">المراجعة</span>${badge(rec.revision)}</div>
+          </div>
+
+          ${rec.excuse ? `<div class="px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-500/25 text-xs font-bold text-rose-600 dark:text-rose-300"><i class="fa-solid fa-file-medical ml-1"></i> العذر: ${rec.excuse}</div>` : ''}
+
+          <input type="text" value="${rec.note || ''}" placeholder="أضف ملاحظة لهذا اليوم..."
+            onchange="saveNote('${stu.id}', '${selectedWeek}', '${selectedDay}', this.value)"
+            class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-semibold text-slate-800 dark:text-white" />
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function saveNote(stuId, weekId, dayKey, noteVal) {
+      const stu = state.studentsCache.find(s => s.id === stuId);
+      if (!stu) return;
+      if (!stu.weeks) stu.weeks = {};
+      if (!stu.weeks[weekId]) stu.weeks[weekId] = { label: getCurrentWeekContext().weekLabel, days: {} };
+      if (!stu.weeks[weekId].days[dayKey]) stu.weeks[weekId].days[dayKey] = {};
+      stu.weeks[weekId].days[dayKey].note = noteVal.trim();
+
+      await fetch(`${FIREBASE_DB_URL}/students/${stu.id}/weeks/${weekId}.json`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(stu.weeks[weekId])
+      });
+      showToast('تم حفظ الملاحظة');
+    }
+
+    // إدارة الرسائل والاستبيانات والمحادثة الجماعية للمشرف
+    async function openAdminCommModal(tab = 'broadcast') {
+      document.getElementById('adminCommModal').classList.remove('hidden');
+      renderRecipientCheckboxes();
+      await switchAdminCommTab(tab);
+    }
+
+    async function switchAdminCommTab(tab) {
+      const btnB = document.getElementById('admTabBroadcast');
+      const btnP = document.getElementById('admTabPoll');
+      const btnG = document.getElementById('admTabGroup');
+      const panB = document.getElementById('admBroadcastPanel');
+      const panP = document.getElementById('admPollPanel');
+      const panG = document.getElementById('admGroupPanel');
+
+      [btnB, btnP, btnG].forEach(b => b.className = 'py-2 rounded-xl text-[11px] font-black text-slate-600 dark:text-slate-300');
+      [panB, panP, panG].forEach(p => p.classList.add('hidden'));
+
+      if (tab === 'broadcast') {
+        btnB.className = 'py-2 rounded-xl text-[11px] font-black bg-[#0F4C3A] text-white';
+        panB.classList.remove('hidden');
+        await markStudentMessagesAsSeen();
+        renderAdminSentMessages();
+      } else if (tab === 'poll') {
+        btnP.className = 'py-2 rounded-xl text-[11px] font-black bg-[#0F4C3A] text-white';
+        panP.classList.remove('hidden');
+        renderAdminPollsList();
+      } else {
+        btnG.className = 'py-2 rounded-xl text-[11px] font-black bg-[#0F4C3A] text-white';
+        panG.classList.remove('hidden');
+        await markStudentMessagesAsSeen();
+        renderAdminGroupChat();
+      }
+    }
+
+    function toggleAllStudentsRecipient(isAll) {
+      const box = document.getElementById('msgStudentsCheckboxes');
+      if (isAll) box.classList.add('hidden');
+      else box.classList.remove('hidden');
+    }
+
+    function renderRecipientCheckboxes() {
+      const box = document.getElementById('msgStudentsCheckboxes');
+      box.innerHTML = state.studentsCache.map(s => `
+        <label class="flex items-center gap-1.5 text-[11px] font-bold truncate cursor-pointer">
+          <input type="checkbox" value="${s.id}" class="msg-stu-chk accent-[#16A34A]" checked />
+          <span class="truncate">${s.name}</span>
+        </label>
+      `).join('');
+    }
+
+    async function sendAdminBroadcastMessage() {
+      const text = document.getElementById('adminBroadcastText').value.trim();
+      if (!text) {
+        showToast('اكتب نص الرسالة أولاً', 'error');
+        return;
+      }
+
+      const isAll = document.getElementById('msgSelectAllStudents').checked;
+      let targetIds = [];
+      if (!isAll) {
+        document.querySelectorAll('.msg-stu-chk:checked').forEach(chk => targetIds.push(chk.value));
+        if (targetIds.length === 0) {
+          showToast('اختر طالباً واحداً على الأقل', 'error');
+          return;
+        }
+      }
+
+      const id = `MSG_${Date.now()}`;
+      const msgObj = {
+        id,
+        targetType: isAll ? 'all' : 'selected',
+        targetIds,
+        text,
+        seenBy: {},
+        timestamp: Date.now(),
+        timeStr: getTrustedNow().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/adminMessages/${id}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(msgObj)
+        });
+        document.getElementById('adminBroadcastText').value = '';
+        await syncAllData(false);
+        showToast('تم إرسال الرسالة للطلاب بنجاح');
+      } catch (e) {
+        showToast('تعذر الإرسال', 'error');
+      }
+    }
+
+    async function clearAllDirectMessages() {
+      if (!confirm('هل تريد حذف جميع الرسائل الموجهة وردود الطلاب؟')) return;
+      await fetch(`${FIREBASE_DB_URL}/adminMessages.json`, { method: 'DELETE' });
+      state.adminMessages = [];
+      renderAdminSentMessages();
+      showToast('تم حذف جميع الرسائل');
+    }
+
+    function renderAdminSentMessages() {
+      const list = document.getElementById('adminSentMessagesList');
+      if (!state.adminMessages || state.adminMessages.length === 0) {
+        list.innerHTML = `<div class="py-6 text-center text-xs text-slate-500 font-bold">لم ترسل أي رسائل بعد.</div>`;
+        return;
+      }
+
+      list.innerHTML = state.adminMessages.map(m => {
+        const replies = (m.replies && typeof m.replies === 'object') ? Object.values(m.replies).filter(Boolean) : [];
+        const seenCount = m.seenBy ? Object.keys(m.seenBy).length : 0;
+        const targetLabel = m.targetType === 'all' ? 'جميع الطلاب' : `طلاب محددون (${(m.targetIds || []).length})`;
+
+        return `
+          <div class="p-3 rounded-2xl bg-white dark:bg-[#0D241C] border border-slate-200 dark:border-emerald-800/40 space-y-2.5 text-xs shadow-sm">
+            <div class="flex items-center justify-between text-[10px]">
+              <span class="px-2 py-0.5 rounded bg-sky-500/15 text-sky-600 dark:text-sky-300 font-black">إلى: ${targetLabel}</span>
+              <button onclick="deleteAdminMessage('${m.id}')" class="text-rose-500 font-bold">حذف</button>
+            </div>
+
+            <!-- فقاعة المشرف (يمين باسم أنت + صحين أزرق سماوي عند القراءة) -->
+            <div class="flex flex-col items-start">
+              <div class="max-w-[85%] px-3 py-2 rounded-2xl rounded-tr-none bg-[#DCF8C6] dark:bg-[#0F4C3A] text-slate-900 dark:text-white">
+                <p class="text-[10px] font-black text-[#0F4C3A] dark:text-[#7CE82B] mb-0.5">أنت</p>
+                <p class="font-semibold leading-relaxed">${m.text}</p>
+                <div class="flex items-center justify-end gap-1 mt-1 text-[9px] opacity-85">
+                  <span>${m.timeStr || ''}</span>
+                  <i class="fa-solid fa-check-double ${seenCount > 0 ? 'text-[#0284C7] dark:text-[#38BDF8]' : 'text-slate-400'}"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- فقاعات ردود الطلاب (يسار بالاسم الصريح) -->
+            ${replies.map(r => `
+              <div class="flex flex-col items-end">
+                <div class="max-w-[85%] px-3 py-2 rounded-2xl rounded-tl-none bg-slate-100 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40">
+                  <p class="text-[10px] font-black text-[#16A34A] dark:text-[#7CE82B] mb-0.5">${r.studentName}</p>
+                  <p class="font-semibold leading-relaxed text-slate-800 dark:text-slate-100">${r.text}</p>
+                  <span class="block text-[9px] opacity-70 mt-1 text-left">${r.timeStr || ''}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function deleteAdminMessage(id) {
+      await fetch(`${FIREBASE_DB_URL}/adminMessages/${id}.json`, { method: 'DELETE' });
+      await syncAllData(false);
+    }
+
+    // دوال الاستبيان والتصويت
+    function addPollOptionField() {
+      const container = document.getElementById('pollOptionsInputsContainer');
+      const count = container.querySelectorAll('.poll-opt-input').length + 1;
+      if (count > 6) {
+        showToast('الحد الأقصى 6 خيارات', 'error');
+        return;
+      }
+      const inp = document.createElement('input');
+      inp.type = 'text';
+      inp.className = 'poll-opt-input w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-semibold';
+      inp.placeholder = `الخيار ${count}...`;
+      container.appendChild(inp);
+    }
+
+    async function publishAdminPoll() {
+      const question = document.getElementById('pollQuestionInput').value.trim();
+      const options = [];
+      document.querySelectorAll('.poll-opt-input').forEach(inp => {
+        const val = inp.value.trim();
+        if (val) options.push(val);
+      });
+
+      if (!question || options.length < 2) {
+        showToast('اكتب سؤال الاستبيان وخيارين على الأقل', 'error');
+        return;
+      }
+
+      const id = `POLL_${Date.now()}`;
+      const pollObj = {
+        id,
+        question,
+        options,
+        votes: {},
+        timestamp: Date.now(),
+        timeStr: getTrustedNow().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/polls/${id}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(pollObj)
+        });
+        document.getElementById('pollQuestionInput').value = '';
+        document.getElementById('pollOptionsInputsContainer').innerHTML = `
+          <input type="text" class="poll-opt-input w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-semibold" placeholder="الخيار 1 (مثلاً: نعم)" />
+          <input type="text" class="poll-opt-input w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-800/40 text-xs font-semibold" placeholder="الخيار 2 (مثلاً: لا)" />
+        `;
+        await syncAllData(false);
+        showToast('تم نشر الاستبيان للطلاب بنجاح');
+      } catch (e) {
+        showToast('تعذر نشر الاستبيان', 'error');
+      }
+    }
+
+    function renderAdminPollsList() {
+      const box = document.getElementById('adminPollsResultsList');
+      if (!state.pollsList || state.pollsList.length === 0) {
+        box.innerHTML = `<div class="py-6 text-center text-xs text-slate-500 font-bold">لا توجد استبيانات منشورة حالياً.</div>`;
+        return;
+      }
+
+      box.innerHTML = state.pollsList.map(p => {
+        const votesArr = p.votes ? Object.values(p.votes) : [];
+        const totalVotes = votesArr.length;
+
+        const optionsHtml = (p.options || []).map((opt, idx) => {
+          const voters = votesArr.filter(v => v.optionIndex === idx);
+          const pct = totalVotes > 0 ? Math.round((voters.length / totalVotes) * 100) : 0;
+          const namesStr = voters.map(v => v.studentName).join('، ');
+          return `
+            <div class="p-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200/70 dark:border-emerald-800/30 space-y-1">
+              <div class="flex justify-between text-[11px] font-black">
+                <span>${opt}</span>
+                <span class="text-[#16A34A] dark:text-[#7CE82B]">${voters.length} أصوات (${pct}%)</span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                <div class="h-full bg-[#16A34A]" style="width:${pct}%"></div>
+              </div>
+              ${namesStr ? `<p class="text-[10px] text-slate-500 font-semibold">المصوّتون: ${namesStr}</p>` : ''}
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="p-3.5 rounded-2xl bg-white dark:bg-[#0D241C] border border-amber-500/30 space-y-2 text-xs shadow-sm">
+            <div class="flex items-start justify-between gap-2">
+              <p class="font-black text-slate-900 dark:text-white">${p.question}</p>
+              <button onclick="deletePoll('${p.id}')" class="text-rose-500 text-[10px] font-bold shrink-0">حذف</button>
+            </div>
+            <div class="space-y-1.5">${optionsHtml}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function deletePoll(id) {
+      await fetch(`${FIREBASE_DB_URL}/polls/${id}.json`, { method: 'DELETE' });
+      await syncAllData(false);
+    }
+
+    // المحادثة الجماعية للمشرف (بدون تاج، باسم أنت في اليمين، والطلاب في اليسار مع صحين أزرق)
+    function renderAdminGroupChat() {
+      const box = document.getElementById('admGroupMessagesList');
+      if (!state.groupMessages || state.groupMessages.length === 0) {
+        box.innerHTML = `<div class="py-12 text-center text-xs text-slate-500 font-bold">لا توجد رسائل في المحادثة الجماعية بعد.</div>`;
+        return;
+      }
+
+      box.innerHTML = state.groupMessages.map(g => {
+        const isAdmin = g.isAdmin === true;
+        const seenCount = g.seenBy ? Object.keys(g.seenBy).length : 0;
+        const senderTitle = isAdmin ? 'أنت' : g.senderName;
+
+        return `
+          <div class="flex flex-col ${isAdmin ? 'items-start' : 'items-end'}">
+            <div class="max-w-[82%] px-3.5 py-2.5 rounded-2xl text-xs shadow-sm ${isAdmin ? 'bg-[#DCF8C6] dark:bg-[#0F4C3A] text-slate-900 dark:text-white rounded-tr-none' : 'bg-white dark:bg-[#0D241C] text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-emerald-800/40 rounded-tl-none'}">
+              <p class="text-[10px] font-black mb-0.5 ${isAdmin ? 'text-[#0F4C3A] dark:text-[#7CE82B]' : 'text-[#16A34A] dark:text-[#7CE82B]'}">
+                ${senderTitle}
+              </p>
+              <p class="font-semibold leading-relaxed">${g.text}</p>
+              <div class="flex items-center justify-end gap-1 mt-1 text-[9px] opacity-85">
+                <span>${g.timeStr || ''}</span>
+                ${isAdmin ? `<i class="fa-solid fa-check-double ${seenCount > 0 ? 'text-[#0284C7] dark:text-[#38BDF8]' : 'text-slate-400'}"></i>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function clearAllGroupChat() {
+      if (!confirm('هل تريد حذف جميع رسائل المحادثة الجماعية؟')) return;
+      await fetch(`${FIREBASE_DB_URL}/groupChat.json`, { method: 'DELETE' });
+      state.groupMessages = [];
+      renderAdminGroupChat();
+      showToast('تم حذف المحادثة الجماعية');
+    }
+
+    async function sendAdminGroupChatMessage() {
+      const inp = document.getElementById('adminGroupChatInput');
+      const text = inp.value.trim();
+      if (!text) return;
+
+      const id = `GRP_${Date.now()}`;
+      const msgObj = {
+        id,
+        senderId: 'admin',
+        senderName: 'المشرف: منير بن عبد الله آل صادر',
+        isAdmin: true,
+        text,
+        seenBy: {},
+        timestamp: Date.now(),
+        timeStr: getTrustedNow().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/groupChat/${id}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(msgObj)
+        });
+        inp.value = '';
+        await syncAllData(false);
+      } catch (e) {
+        showToast('تعذر الإرسال', 'error');
+      }
+    }
+
+    function handleCustomLogoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = async function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 260;
+          const scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/png', 0.88);
+
+          state.cloudLogoUrl = dataUrl;
+          renderLogos();
+
+          await fetch(`${FIREBASE_DB_URL}/settings/logo.json`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dataUrl)
+          });
+          showToast('تم رفع الشعار وتعميمه على جميع الطلاب!');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // تصميم PDF الفخم المتناسق الذي يوزع عناصر الورقة بانسجام تام في صفحة A4 واحدة
+    function buildAllStudentsDailyPdfHtml(selectedWeek, selectedDay) {
+      const logoSrc = state.cloudLogoUrl || DEFAULT_LOGO_PATH;
+      const dayObj = ALL_WEEK_DAYS.find(d => d.key === selectedDay) || ALL_WEEK_DAYS[0];
+      const curCtx = getCurrentWeekContext();
+      const dt = curCtx.dayDatesMap[selectedDay] || curCtx.todayHijri;
+
+      const memCell = (r) => {
+        if (r.memorization === 'نعم') {
+          const amt = r.memAmount || 'صفحة';
+          return `<span style="background:#16A34A;color:#fff;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:900;">${amt}</span>`;
+        }
+        return r.memorization === 'لا'
+          ? `<span style="background:#E11D48;color:#fff;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:900;">لا ✕</span>`
+          : '—';
+      };
+
+      const pill = (v) => v === 'نعم'
+        ? `<span style="background:#16A34A;color:#fff;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:900;">نعم ✓</span>`
+        : (v === 'لا' ? `<span style="background:#E11D48;color:#fff;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:900;">لا ✕</span>` : '—');
+
+      let rows = '';
+      state.studentsCache.forEach((stu, idx) => {
+        const weekObj = (stu.weeks && stu.weeks[selectedWeek]) || { days: {} };
+        const r = (weekObj.days && weekObj.days[selectedDay]) || {};
+        rows += `
+          <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-[#F0F9F4]'}">
+            <td class="py-2 px-2 border-l border-emerald-900/20 font-black text-[#0A2E22]">${idx + 1}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20 font-black text-[#0A2E22] text-right">${stu.name}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20 font-bold text-[#16A34A]">${stu.matn}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${memCell(r)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.repetition)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.yesterday)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.linking)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.revision)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20 text-[10px] text-rose-700 font-extrabold">${r.excuse || '—'}</td>
+            <td class="py-2 px-2 text-[10px]">${r.note || '—'}</td>
+          </tr>
+        `;
+      });
+
+      return `
+        <div class="print-a4-sheet luxury-cert-frame bg-gradient-to-b from-[#FAFDFB] via-white to-[#F7FBF8] text-slate-900 rounded-2xl p-5 w-full max-w-[1050px] mx-auto shadow-xl">
+          <div>
+            <div class="h-2.5 w-full bg-gradient-to-r from-[#0A2E22] via-[#D4AF37] to-[#16A34A] rounded-full mb-3"></div>
+
+            <div class="grid grid-cols-12 gap-3 items-center pb-3 border-b-2 border-[#D4AF37]/40">
+              <div class="col-span-4 flex items-center gap-3">
+                <div class="w-14 h-14 bg-white rounded-2xl p-1 border-2 border-[#0A2E22]/20 shrink-0 flex items-center justify-center overflow-hidden">
+                  <img src="${logoSrc}" alt="شعار المجمع" class="w-12 h-12 object-contain rounded-xl" />
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-bold text-[#D4AF37]">المملكة العربية السعودية</p>
+                  <h3 class="text-sm font-black text-[#0A2E22]">مجمع حلقات الإمام الشاطبي</h3>
+                  <p class="text-[10px] font-extrabold text-[#16A34A]">المشرف: منير بن عبد الله آل صادر</p>
+                </div>
+              </div>
+
+              <div class="col-span-4 text-center">
+                <div class="inline-block px-5 py-2 rounded-2xl bg-gradient-to-r from-[#0A2E22] via-[#0F4C3A] to-[#0A2E22] text-white border border-[#D4AF37]">
+                  <h2 class="text-base font-black font-amiri text-[#FDF8E2]">كشف المتابعة اليومي الشامل</h2>
+                </div>
+                <p class="text-[11px] font-extrabold text-[#0F4C3A] mt-1">يوم ${dayObj.ar} • التاريخ الهجري: ${dt}</p>
+              </div>
+
+              <div class="col-span-4 bg-emerald-50/70 border-2 border-[#0F4C3A]/25 rounded-xl p-2 text-[11px] space-y-1">
+                <div class="flex justify-between border-b border-emerald-900/10 pb-0.5"><span class="font-bold text-slate-600">عدد الطلاب:</span><span class="font-black text-[#0A2E22]">${state.studentsCache.length} طلاب</span></div>
+                <div class="flex justify-between"><span class="font-bold text-slate-600">الأسبوع:</span><span class="font-extrabold text-[#16A34A]">${curCtx.weekLabel}</span></div>
+              </div>
+            </div>
+
+            <div class="my-2.5 overflow-hidden rounded-xl border-2 border-[#0A2E22]">
+              <table class="w-full border-collapse text-center text-[11px]">
+                <thead>
+                  <tr class="bg-[#0A2E22] text-white font-extrabold">
+                    <th class="py-2.5 px-2 border-l border-emerald-700/50 text-[#FDE68A]">م</th>
+                    <th class="py-2.5 px-2 border-l border-emerald-700/50 text-[#FDE68A]">اسم الطالب</th>
+                    <th class="py-2.5 px-2 border-l border-emerald-700/50">المتن</th>
+                    <th class="py-2.5 px-2 border-l border-emerald-700/50">الحفظ الجديد</th>
+                    <th class="py-2.5 px-2 border-l border-emerald-700/50">التكرار</th>
+                    <th class="py-2.5 px-2 border-l border-emerald-700/50">تكرار الأمس</th>
+                    <th class="py-2.5 px-2 border-l border-emerald-700/50">الربط</th>
+                    <th class="py-2.5 px-2 border-l border-emerald-700/50">المراجعة</th>
+                    <th class="py-2.5 px-2 border-l border-emerald-700/50 text-rose-200">العذر</th>
+                    <th class="py-2.5 px-2">ملاحظات</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-emerald-900/20 font-bold">${rows}</tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t-2 border-[#D4AF37]/40 text-center">
+            <p class="font-amiri text-xl font-black text-[#0A2E22]">﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾</p>
+            <p class="text-[10px] text-slate-500 font-semibold mt-0.5">وثيقة متابعة إلكترونية • مجمع حلقات الإمام الشاطبي لتحفيظ القرآن الكريم • إشراف: منير بن عبد الله آل صادر</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildStudentPdfSheetHtml(stu, reportType, selectedWeek) {
+      const logoSrc = state.cloudLogoUrl || DEFAULT_LOGO_PATH;
+      const memCell = (r) => {
+        if (r.memorization === 'نعم') {
+          const amt = r.memAmount || 'صفحة';
+          return `<span style="background:#16A34A;color:#fff;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:900;">${amt}</span>`;
+        }
+        return r.memorization === 'لا'
+          ? `<span style="background:#E11D48;color:#fff;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:900;">لا ✕</span>`
+          : '—';
+      };
+
+      const pill = (v) => v === 'نعم'
+        ? `<span style="background:#16A34A;color:#fff;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:900;">نعم ✓</span>`
+        : (v === 'لا' ? `<span style="background:#E11D48;color:#fff;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:900;">لا ✕</span>` : '—');
+
+      let mainTitle = '';
+      let subtitle = '';
+      let tableHtml = '';
+
+      if (reportType === 'weekly') {
+        mainTitle = 'كشف متابعة حفظ المتون العلمية الأسبوعي';
+        const weekObj = (stu.weeks && stu.weeks[selectedWeek]) || { label: getCurrentWeekContext().weekLabel, days: {} };
+        subtitle = `${weekObj.label} • (من الخميس إلى الأربعاء)`;
+
+        let rows = '';
+        ALL_WEEK_DAYS.forEach((d, idx) => {
+          const r = (weekObj.days && weekObj.days[d.key]) || {};
+          const dt = r.date || (weekObj.dayDatesMap && weekObj.dayDatesMap[d.key]) || getCurrentWeekContext().dayDatesMap[d.key] || '—';
+          rows += `
+            <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-[#F0F9F4]'}">
+              <td class="py-2 px-2 border-l border-emerald-900/20 bg-emerald-950/5 font-black text-xs text-[#0A2E22]">${d.ar}</td>
+              <td class="py-2 px-2 border-l border-emerald-900/20 text-slate-600 text-[11px]">${dt}</td>
+              <td class="py-2 px-2 border-l border-emerald-900/20">${memCell(r)}</td>
+              <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.repetition)}</td>
+              <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.yesterday)}</td>
+              <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.linking)}</td>
+              <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.revision)}</td>
+              <td class="py-2 px-2 border-l border-emerald-900/20 text-[10px] text-rose-700 font-extrabold">${r.excuse || '—'}</td>
+              <td class="py-2 px-2 text-[10px]">${r.note || '—'}</td>
+            </tr>
+          `;
+        });
+
+        tableHtml = `
+          <table class="w-full border-collapse text-center text-xs">
+            <thead>
+              <tr class="bg-[#0A2E22] text-white font-extrabold text-[11px]">
+                <th class="py-2.5 px-2 border-l border-emerald-700/50 text-[#FDE68A]">اليوم</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">التاريخ</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">الحفظ الجديد</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">التكرار</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">تكرار الأمس</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">الربط العام</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">المراجعة</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50 text-rose-200">العذر</th>
+                <th class="py-2.5 px-2">ملاحظات</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-emerald-900/20 font-bold">${rows}</tbody>
+          </table>
+        `;
+      } else {
+        mainTitle = 'التقرير الشهري الشامل لمتابعة المتون العلمية';
+        subtitle = `ملخص الإنجاز الشهري • ${getCurrentWeekContext().monthName}`;
+
+        const allWeeks = stu.weeks ? Object.entries(stu.weeks) : [];
+        let mRows = '';
+        if (allWeeks.length === 0) {
+          mRows = `<tr><td colspan="8" class="py-6 text-slate-400">لا توجد أسابيع مسجلة بعد.</td></tr>`;
+        } else {
+          allWeeks.slice(-4).forEach(([wId, wObj], idx) => {
+            const days = wObj.days || {};
+            let m = 0, r = 0, y = 0, l = 0, v = 0;
+            let excusesList = [];
+            ALL_WEEK_DAYS.forEach(d => {
+              const rec = days[d.key];
+              if (rec) {
+                if (rec.memorization === 'نعم') m++;
+                if (rec.repetition === 'نعم') r++;
+                if (rec.yesterday === 'نعم') y++;
+                if (rec.linking === 'نعم') l++;
+                if (rec.revision === 'نعم') v++;
+                if (rec.excuse) excusesList.push(`${d.ar}: ${rec.excuse}`);
+              }
+            });
+            const pct = Math.min(100, Math.round(((m + r + y + l + v) / 25) * 100));
+            mRows += `
+              <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-[#F0F9F4]'}">
+                <td class="py-2.5 px-2 border-l border-emerald-900/20 font-black text-[#0A2E22]">الأسبوع ${idx + 1} <span class="text-[10px] text-slate-500">(${wObj.label || wId})</span></td>
+                <td class="py-2.5 px-2 border-l border-emerald-900/20 text-xs">${m} / 5</td>
+                <td class="py-2.5 px-2 border-l border-emerald-900/20 text-xs">${r} / 5</td>
+                <td class="py-2.5 px-2 border-l border-emerald-900/20 text-xs">${y} / 5</td>
+                <td class="py-2.5 px-2 border-l border-emerald-900/20 text-xs">${l} / 5</td>
+                <td class="py-2.5 px-2 border-l border-emerald-900/20 text-xs">${v} / 5</td>
+                <td class="py-2.5 px-2 border-l border-emerald-900/20 text-[10px] text-rose-700 font-bold">${excusesList.length ? excusesList.join(' | ') : '—'}</td>
+                <td class="py-2.5 px-2 font-black text-sm text-[#16A34A]">${pct}%</td>
+              </tr>
+            `;
+          });
+        }
+
+        tableHtml = `
+          <table class="w-full border-collapse text-center text-xs">
+            <thead>
+              <tr class="bg-[#0A2E22] text-white font-extrabold text-[11px]">
+                <th class="py-2.5 px-2 border-l border-emerald-700/50 text-[#FDE68A]">الأسبوع</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">الحفظ</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">التكرار</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">تكرار الأمس</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">الربط العام</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50">المراجعة</th>
+                <th class="py-2.5 px-2 border-l border-emerald-700/50 text-rose-200">الأعذار</th>
+                <th class="py-2.5 px-2 text-[#FDE68A]">الإنجاز</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-emerald-900/20 font-bold">${mRows}</tbody>
+          </table>
+        `;
+      }
+
+      return `
+        <div class="print-a4-sheet luxury-cert-frame bg-gradient-to-b from-[#FAFDFB] via-white to-[#F7FBF8] text-slate-900 rounded-2xl p-5 w-full max-w-[1050px] mx-auto shadow-xl">
+          <div>
+            <div class="h-2.5 w-full bg-gradient-to-r from-[#0A2E22] via-[#D4AF37] to-[#16A34A] rounded-full mb-3"></div>
+
+            <div class="grid grid-cols-12 gap-3 items-center pb-3 border-b-2 border-[#D4AF37]/40">
+              <div class="col-span-4 flex items-center gap-3">
+                <div class="w-15 h-15 bg-white rounded-2xl p-1 border-2 border-[#0A2E22]/20 shrink-0 flex items-center justify-center overflow-hidden">
+                  <img src="${logoSrc}" alt="شعار المجمع" class="w-12 h-12 object-contain rounded-xl" />
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-bold text-[#D4AF37]">المملكة العربية السعودية</p>
+                  <h3 class="text-sm font-black text-[#0A2E22]">مجمع حلقات الإمام الشاطبي</h3>
+                  <p class="text-[10px] font-extrabold text-[#16A34A]">المشرف: منير بن عبد الله آل صادر</p>
+                </div>
+              </div>
+
+              <div class="col-span-4 text-center">
+                <div class="inline-block px-5 py-2 rounded-2xl bg-gradient-to-r from-[#0A2E22] via-[#0F4C3A] to-[#0A2E22] text-white border border-[#D4AF37]">
+                  <h2 class="text-base font-black font-amiri text-[#FDF8E2]">${mainTitle}</h2>
+                </div>
+                <p class="text-[10px] font-extrabold text-[#0F4C3A] mt-1">${subtitle}</p>
+              </div>
+
+              <div class="col-span-4 bg-emerald-50/70 border-2 border-[#0F4C3A]/25 rounded-xl p-2 text-[11px] space-y-1">
+                <div class="flex justify-between border-b border-emerald-900/10 pb-0.5">
+                  <span class="font-bold text-slate-600">اسم الطالب:</span>
+                  <span class="font-black text-[#0A2E22]">${stu.name}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="font-bold text-slate-600">اسم المتن:</span>
+                  <span class="font-black text-[#16A34A]">${stu.matn}</span>
+                </div>
+                ${stu.level ? `
+                <div class="flex justify-between border-t border-emerald-900/10 pt-0.5">
+                  <span class="font-bold text-slate-600">المستوى:</span>
+                  <span class="font-extrabold text-slate-800">${stu.level}</span>
+                </div>` : ''}
+              </div>
+            </div>
+
+            <div class="my-2.5 grid grid-cols-5 gap-2 text-center text-[10px]">
+              <div class="bg-white border border-[#0F4C3A]/20 rounded-xl py-1.5 px-2"><span class="text-slate-500 font-bold block">مقدار الحفظ</span><strong class="text-[#0A2E22] font-black">صفحة واحدة</strong></div>
+              <div class="bg-white border border-[#0F4C3A]/20 rounded-xl py-1.5 px-2"><span class="text-slate-500 font-bold block">مقدار التكرار</span><strong class="text-[#0A2E22] font-black">١٠ نظر ثم ٢٠ غيباً</strong></div>
+              <div class="bg-white border border-[#0F4C3A]/20 rounded-xl py-1.5 px-2"><span class="text-slate-500 font-bold block">تكرار الأمس</span><strong class="text-[#0A2E22] font-black">٢٠ مرة غيباً</strong></div>
+              <div class="bg-white border border-[#0F4C3A]/20 rounded-xl py-1.5 px-2"><span class="text-slate-500 font-bold block">الربط العام</span><strong class="text-[#0A2E22] font-black">١٠ صفحات</strong></div>
+              <div class="bg-white border border-[#0F4C3A]/20 rounded-xl py-1.5 px-2"><span class="text-slate-500 font-bold block">مقدار المراجعة</span><strong class="text-[#0A2E22] font-black">١٠ صفحات</strong></div>
+            </div>
+
+            <div class="overflow-hidden rounded-xl border-2 border-[#0A2E22]">${tableHtml}</div>
+          </div>
+
+          <div class="pt-2 border-t-2 border-[#D4AF37]/40 text-center">
+            <p class="font-amiri text-xl font-black text-[#0A2E22]">﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾</p>
+            <p class="text-[10px] text-slate-500 font-semibold mt-0.5">وثيقة متابعة إلكترونية • مجمع حلقات الإمام الشاطبي لتحفيظ القرآن الكريم • إشراف: منير بن عبد الله آل صادر</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function populatePdfWeekSelector(defaultWeekId) {
+      const cur = getCurrentWeekContext();
+      const map = new Map();
+      map.set(cur.weekId, cur.weekLabel);
+      state.studentsCache.forEach(s => {
+        if (s.weeks) Object.entries(s.weeks).forEach(([id, w]) => map.set(id, w.label || id));
+      });
+      const sel = document.getElementById('pdfWeekSelector');
+      sel.innerHTML = '';
+      map.forEach((lbl, id) => {
+        const o = document.createElement('option');
+        o.value = id; o.textContent = lbl;
+        sel.appendChild(o);
+      });
+      sel.value = defaultWeekId || document.getElementById('supWeekFilter').value || cur.weekId;
+    }
+
+    function openPdfModal(stuId, weekId) {
+      const stu = state.studentsCache.find(s => s.id === stuId);
+      if (!stu) return;
+      state.printMode = 'single';
+      state.activePrintStudentId = stu.id;
+      document.getElementById('pdfModalModeTitle').textContent = `كشف الطالب: ${stu.name}`;
+      document.getElementById('pdfReportType').value = 'weekly';
+      document.getElementById('pdfDaySelector').value = document.getElementById('supDayFilter').value;
+      populatePdfWeekSelector(weekId);
+      refreshPrintReport();
+      document.getElementById('printModalOverlay').classList.remove('hidden');
+    }
+
+    function openBulkPdfModal() {
+      if (state.studentsCache.length === 0) {
+        showToast('لا يوجد طلاب لإصدار تقارير لهم', 'error');
+        return;
+      }
+      state.printMode = 'all';
+      state.activePrintStudentId = null;
+      document.getElementById('pdfModalModeTitle').textContent = `تقارير لجميع الطلاب (${state.studentsCache.length} طلاب)`;
+      document.getElementById('pdfDaySelector').value = document.getElementById('supDayFilter').value;
+      populatePdfWeekSelector(document.getElementById('supWeekFilter').value);
+      refreshPrintReport();
+      document.getElementById('printModalOverlay').classList.remove('hidden');
+    }
+
+    function refreshPrintReport() {
+      const reportType = document.getElementById('pdfReportType').value;
+      const selectedWeek = document.getElementById('pdfWeekSelector').value;
+      const selectedDay = document.getElementById('pdfDaySelector').value;
+      const container = document.getElementById('printBgWrapper');
+
+      if (reportType === 'daily') {
+        document.getElementById('pdfWeekSelector').classList.remove('hidden');
+        document.getElementById('pdfDaySelector').classList.remove('hidden');
+        container.innerHTML = buildAllStudentsDailyPdfHtml(selectedWeek, selectedDay);
+        return;
+      }
+
+      if (reportType === 'weekly') {
+        document.getElementById('pdfWeekSelector').classList.remove('hidden');
+        document.getElementById('pdfDaySelector').classList.add('hidden');
+      } else {
+        document.getElementById('pdfWeekSelector').classList.add('hidden');
+        document.getElementById('pdfDaySelector').classList.add('hidden');
+      }
+
+      if (state.printMode === 'all') {
+        container.innerHTML = state.studentsCache.map(stu => buildStudentPdfSheetHtml(stu, reportType, selectedWeek)).join('');
+      } else {
+        const stu = state.studentsCache.find(s => s.id === state.activePrintStudentId);
+        if (!stu) return;
+        container.innerHTML = buildStudentPdfSheetHtml(stu, reportType, selectedWeek);
+      }
+    }
+
+    function toggleTheme() {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('shatibi_theme', state.theme);
+      applyTheme(state.theme);
+    }
+
+    function applyTheme(t) {
+      if (t === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    }
+
+    function showToast(msg, type = 'success') {
+      const box = document.getElementById('toastBox');
+      document.getElementById('toastText').textContent = msg;
+      document.getElementById('toastIcon').className = type === 'error'
+        ? 'fa-solid fa-circle-exclamation text-rose-400'
+        : 'fa-solid fa-circle-check text-[#7CE82B]';
+      box.classList.remove('opacity-0', 'translate-y-3');
+      box.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(window._tt);
+      window._tt = setTimeout(() => {
+        box.classList.remove('opacity-100', 'translate-y-0');
+        box.classList.add('opacity-0', 'translate-y-3');
+      }, 2800);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      applyTheme(state.theme);
+      renderLogos();
+      syncAllData(false);
+    });
+  </script>
+</body>
+</html>

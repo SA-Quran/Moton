@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  
+  <title>المتون العلمية</title>
+  <meta name="application-name" content="المتون العلمية" />
+  <meta name="apple-mobile-web-app-title" content="المتون العلمية" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0A2E22" />
+  <link rel="icon" type="image/png" href="Saaa.png" />
+  <link rel="apple-touch-icon" href="Saaa.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            amiri: ['Amiri', 'serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: pan-y;
+    }
+    html, body {
+      font-family: 'Cairo', sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-text-size-adjust: 100%;
+    }
+    .safe-top-header {
+      padding-top: calc(env(safe-area-inset-top, 16px) + 10px);
+    }
+    .islamic-pattern {
+      background-image: radial-gradient(rgba(101, 208, 30, 0.08) 1px, transparent 1px),
+                        radial-gradient(rgba(212, 175, 55, 0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+    }
+    .pill-switch {
+      display: inline-flex;
+      background: rgba(148, 163, 184, 0.16);
+      padding: 3px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      gap: 4px;
+    }
+    .pill-option {
+      min-width: 52px;
+      padding: 6px 12px;
+      border-radius: 11px;
+      font-size: 12px;
+      font-weight: 800;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .pill-neutral {
+      background: rgba(148, 163, 184, 0.22);
+      color: #64748b;
+    }
+    .dark .pill-neutral {
+      background: rgba(148, 163, 184, 0.12);
+      color: #94a3b8;
+    }
+    .pill-option.yes-active {
+      background: linear-gradient(135deg, #0F4C3A 0%, #16A34A 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(22, 163, 74, 0.35);
+    }
+    .pill-option.no-active {
+      background: linear-gradient(135deg, #BE123C 0%, #E11D48 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(225, 29, 72, 0.35);
+    }
+    .luxury-cert-frame {
+      border: 3px solid #0A2E22;
+      box-shadow: inset 0 0 0 3px #ffffff, inset 0 0 0 5px #D4AF37;
+    }
+    @keyframes popBounce {
+      0% { transform: scale(0.7); opacity: 0; }
+      70% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popBounce 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @page { size: A4 landscape; margin: 5mm; }
+    @media print {
+      html, body { background: #fff !important; width: 297mm !important; height: 210mm !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .no-print { display: none !important; }
+      #previewModalOverlay { position: static !important; background: transparent !important; padding: 0 !important; display: block !important; overflow: visible !important; }
+      #studentPreviewContainer { box-shadow: none !important; max-width: 100% !important; width: 287mm !important; height: 199mm !important; margin: 0 auto !important; border-radius: 0 !important; overflow: hidden !important; }
+      #studentPreviewBg { padding: 0 !important; background: #fff !important; height: 100% !important; }
+      #studentCertSheet { width: 287mm !important; height: 199mm !important; min-width: 0 !important; padding: 12px 16px !important; box-sizing: border-box !important; overflow: hidden !important; }
+    }
+  </style>
+</head>
+<body class="bg-[#F6F5F0] text-slate-800 dark:bg-[#071510] dark:text-slate-100 islamic-pattern min-h-screen flex flex-col select-none">
+
+  <!-- الشريط العلوي -->
+  <header class="no-print sticky top-0 z-40 backdrop-blur-xl bg-white/90 dark:bg-[#0A1F18]/90 border-b border-emerald-900/10 dark:border-emerald-500/15 shadow-sm safe-top-header pb-2.5">
+    <div class="max-w-xl mx-auto px-4 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <div class="bg-white rounded-2xl p-1 shadow-md border border-emerald-900/15 w-11 h-11 flex items-center justify-center shrink-0 overflow-hidden" id="headerLogoBox"></div>
+        <div>
+          <h1 class="text-xs sm:text-sm font-black text-[#0A2E22] dark:text-emerald-300 leading-snug">
+            مجمع حلقات الإمام الشاطبي
+          </h1>
+          <p class="text-[10px] sm:text-xs font-semibold text-slate-500 dark:text-emerald-100/70">
+            لتحفيظ القرآن الكريم • برنامج المتون العلمية
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5">
+        <span id="cloudStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" title="حالة الاتصال"></span>
+
+        <button id="headerChatBtn" onclick="openStudentCommModal('direct')" aria-label="المحادثة والرسائل"
+          class="hidden relative w-8 h-8 rounded-xl bg-sky-500/15 text-sky-600 dark:text-sky-300 border border-sky-500/25 flex items-center justify-center text-xs shadow-sm">
+          <i class="fa-solid fa-comments"></i>
+          <span id="unreadMsgDot" class="hidden absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+        </button>
+
+        <button onclick="document.getElementById('instructionsModal').classList.remove('hidden')" aria-label="تعليمات الاستخدام"
+          class="w-8 h-8 rounded-xl bg-emerald-950/10 dark:bg-emerald-500/15 text-[#0F4C3A] dark:text-[#7CE82B] border border-emerald-900/15 dark:border-emerald-400/25 flex items-center justify-center font-black text-sm shadow-sm">
+          <i class="fa-solid fa-question"></i>
+        </button>
+
+        <button onclick="toggleTheme()" aria-label="تبديل المظهر"
+          class="h-8 px-2.5 rounded-xl bg-slate-100 dark:bg-emerald-950/80 border border-slate-300/80 dark:border-emerald-500/30 flex items-center gap-1.5 text-[11px] font-black text-slate-700 dark:text-[#7CE82B] shadow-sm transition active:scale-95">
+          <i class="fa-solid fa-moon text-indigo-500 dark:hidden"></i>
+          <span class="dark:hidden">داكن</span>
+          <i class="fa-solid fa-sun text-amber-400 hidden dark:inline"></i>
+          <span class="hidden dark:inline">فاتح</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="no-print flex-1 max-w-xl mx-auto w-full px-4 py-5 flex flex-col justify-center">
+
+    <!-- 1. شاشة التفعيل بالكود لمرة واحدة -->
+    <section id="studentCodeLoginView" class="hidden my-auto">
+      <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-6 shadow-xl border border-emerald-900/10 dark:border-emerald-500/20 text-center space-y-5">
+        <div class="bg-white rounded-3xl p-2 shadow-lg border-2 border-[#65D01E]/40 w-28 h-28 mx-auto flex items-center justify-center overflow-hidden" id="loginLogoBox"></div>
+
+        <div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] mb-1.5">
+            <i class="fa-solid fa-lock"></i>
+            <span>تفعيل حساب الطالب بالكود</span>
+          </span>
+          <h2 class="text-lg font-black text-[#0A2E22] dark:text-white">أدخل كود الدخول الخاص بك</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+            أدخل الكود الذي استلمته من المشرف لربط حسابك بهذا الجهاز والدخول إلى برنامج المتابعة.
+          </p>
+        </div>
+
+        <form onsubmit="event.preventDefault(); handleStudentCodeLogin(event);" class="space-y-4">
+          <input type="tel" id="studentCodeInput" inputmode="numeric" maxlength="6" required placeholder="••••"
+            class="w-full py-3.5 px-4 rounded-2xl bg-slate-50 dark:bg-[#071510] border-2 border-slate-200 dark:border-emerald-700/40 text-center text-2xl tracking-[0.5em] font-black text-slate-900 dark:text-white focus:outline-none focus:border-[#65D01E]" />
+
+          <button type="submit" id="btnVerifyCode"
+            class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-[#0A2E22] via-[#0F4C3A] to-[#15803D] text-white font-black text-sm shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-check-circle text-[#7CE82B]"></i>
+            <span>تفعيل الدخول</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 1.5 شاشة إشعار الحذف من المشرف -->
+    <section id="studentDeletedView" class="hidden my-auto">
+      <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-6 shadow-xl border-2 border-rose-500/30 text-center space-y-5 animate-pop">
+        <div class="w-20 h-20 mx-auto rounded-3xl bg-rose-500/15 text-rose-500 flex items-center justify-center text-4xl">
+          <i class="fa-solid fa-user-slash"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-black text-rose-600 dark:text-rose-400">لقد تم حذف حسابك</h2>
+          <p class="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+            تمت إزالة سجل هذا الحساب من قبل المشرف. يمكنك الخروج الآن وإعادة تسجيل الدخول باستخدام الكود الجديد الذي يزودك به المشرف.
+          </p>
+        </div>
+        <button onclick="logoutDeletedStudent()"
+          class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-rose-600 to-rose-500 text-white font-black text-sm shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>خروج / رجوع لتسجيل الدخول</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. شاشة الطالب اليومية -->
+    <section id="studentDailyView" class="hidden space-y-4 my-auto">
+
+      <!-- بطاقة تعريف الطالب -->
+      <div class="rounded-3xl bg-gradient-to-br from-[#0A2E22] via-[#0F4C3A] to-[#135D47] text-white p-4 sm:p-5 shadow-xl border border-emerald-400/20 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-white p-1 shadow-md shrink-0 flex items-center justify-center overflow-hidden" id="cardMiniLogo"></div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-[#7CE82B] animate-pulse"></span>
+              <span class="text-[10px] font-bold text-[#7CE82B]">حساب طالب مُفعّل</span>
+            </div>
+            <h2 id="activeStudentName" class="text-base sm:text-lg font-black text-white leading-tight mt-0.5">--</h2>
+            <p id="activeStudentMeta" class="text-[11px] text-emerald-100/90 font-bold mt-0.5">--</p>
+          </div>
+        </div>
+        <button onclick="openStudentCommModal('direct')" class="px-3 py-2 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-[11px] font-black flex flex-col items-center gap-0.5 shrink-0 border border-white/15">
+          <i class="fa-solid fa-envelope-open-text text-[#7CE82B] text-sm"></i>
+          <span>الرسائل</span>
+        </button>
+      </div>
+
+      <!-- إشعار رسائل المشرف غير المرئية + الاستبيان النشط -->
+      <div id="supervisorDirectMessagesBox" class="hidden space-y-2"></div>
+      <div id="activePollBannerBox" class="hidden space-y-2"></div>
+
+      <!-- بطاقة يومي الجمعة والسبت -->
+      <div id="friSatNoticeCard" class="hidden bg-white dark:bg-[#0D241C] rounded-3xl p-5 text-center shadow-lg border border-emerald-900/10 dark:border-emerald-500/20 space-y-3">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-2xl">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-slate-900 dark:text-white" id="friSatDayTitle">يوم الجمعة</h3>
+          <p class="text-xs font-extrabold text-[#16A34A] dark:text-[#7CE82B] mt-0.5">اليوم اختياري</p>
+          <p class="text-[11px] text-slate-400 mt-1" id="friSatHijriDate">--</p>
+        </div>
+        <div class="space-y-2 pt-1">
+          <button onclick="enableOptionalFriSatLogging()" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#0A2E22] via-[#0F4C3A] to-[#16A34A] text-white text-xs font-black shadow-lg flex items-center justify-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-[#7CE82B]"></i>
+            <span>رصد إنجاز اليوم</span>
+          </button>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="openWeeklyPreview()" class="py-2.5 px-3 rounded-2xl bg-slate-100 dark:bg-emerald-950/60 text-slate-700 dark:text-emerald-200 text-xs font-black border border-slate-200/80 dark:border-emerald-700/30">
+              <i class="fa-solid fa-eye ml-1 text-emerald-500"></i> معاينة الأسبوع
+            </button>
+            <button onclick="openForgotDayModal()" class="py-2.5 px-3 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/30 text-xs font-black">
+              <i class="fa-solid fa-bell ml-1"></i> نسيت يوماً سابقاً؟
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- بطاقة الرصد اليومي -->
+      <div id="todayTaskCard" class="bg-white dark:bg-[#0D241C] rounded-3xl p-4 sm:p-5 shadow-xl border border-emerald-900/10 dark:border-emerald-500/20 space-y-3">
+        <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-emerald-800/40">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-lg bg-[#65D01E]/20 text-[#0F4C3A] dark:text-[#7CE82B] text-xs font-black" id="todayNameBadge">الخميس</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-300" id="todayDateDisplay">--</span>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-emerald-100/60 mt-1 font-medium" id="weekLabelDisplay">الأسبوع الحالي</p>
+          </div>
+          <div id="todayStatusChip" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+            انقر نعم أو لا لكل بند
+          </div>
+        </div>
+
+        <div class="space-y-2.5">
+          <!-- 1. الحفظ الجديد + مقدار الحفظ -->
+          <div class="p-3 rounded-2xl bg-slate-50/90 dark:bg-[#071510]/80 border border-slate-200/70 dark:border-emerald-800/30 space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-[#0F4C3A]/10 dark:bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-book-open"></i></div>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-white">الحفظ الجديد</h4>
+                  <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">الافتراضي صفحة واحدة</p>
+                </div>
+              </div>
+              <div class="pill-switch" id="switch-memorization">
+                <button type="button" class="pill-option pill-neutral" onclick="selectPill('memorization', 'نعم')">نعم</button>
+                <button type="button" class="pill-option pill-neutral" onclick="selectPill('memorization', 'لا')">لا</button>
+              </div>
+            </div>
+
+            <div id="todayMemAmountBox" class="hidden pt-2 border-t border-slate-200/70 dark:border-emerald-800/30 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-extrabold text-[#0F4C3A] dark:text-[#7CE82B]">
+                  <i class="fa-solid fa-file-lines ml-1"></i> مقدار الحفظ:
+                </span>
+                <select id="todayMemAmountSelect" onchange="toggleCustomMemAmount('today')"
+                  class="px-3 py-1.5 rounded-xl bg-white dark:bg-[#0D241C] border border-emerald-500/30 text-xs font-black text-slate-800 dark:text-white focus:outline-none">
+                  <option value="صفحة" selected>صفحة (افتراضي)</option>
+                  <option value="نصف صفحة">نصف صفحة</option>
+                  <option value="صفحة ونصف">صفحة ونصف</option>
+                  <option value="صفحتان">صفحتان</option>
+                  <option value="صفحتان ونصف">صفحتان ونصف</option>
+                  <option value="ثلاث صفحات">ثلاث صفحات</option>
+                  <option value="CUSTOM">آخر (كتابة يدوية)...</option>
+                </select>
+              </div>
+              <input type="text" id="todayCustomMemAmountInput" maxlength="16" placeholder="اكتب المقدار بنفس الصيغة (مثلاً: أربع صفحات)"
+                class="hidden w-full px-3 py-2 rounded-xl bg-white dark:bg-[#0D241C] border border-emerald-500/30 text-xs font-bold text-slate-800 dark:text-white focus:outline-none" />
+            </div>
+          </div>
+
+          <!-- 2. مقدار التكرار -->
+          <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/90 dark:bg-[#071510]/80 border border-slate-200/70 dark:border-emerald-800/30">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-[#0F4C3A]/10 dark:bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-repeat"></i></div>
+              <div>
+                <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-white">مقدار التكرار</h4>
+                <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">١٠ نظر ثم ٢٠ غيباً</p>
+              </div>
+            </div>
+            <div class="pill-switch" id="switch-repetition">
+              <button type="button" class="pill-option pill-neutral" onclick="selectPill('repetition', 'نعم')">نعم</button>
+              <button type="button" class="pill-option pill-neutral" onclick="selectPill('repetition', 'لا')">لا</button>
+            </div>
+          </div>
+
+          <!-- 3. تكرار الأمس -->
+          <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/90 dark:bg-[#071510]/80 border border-slate-200/70 dark:border-emerald-800/30">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-[#0F4C3A]/10 dark:bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-clock-rotate-left"></i></div>
+              <div>
+                <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-white">تكرار الأمس</h4>
+                <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">٢٠ مرة غيباً</p>
+              </div>
+            </div>
+            <div class="pill-switch" id="switch-yesterday">
+              <button type="button" class="pill-option pill-neutral" onclick="selectPill('yesterday', 'نعم')">نعم</button>
+              <button type="button" class="pill-option pill-neutral" onclick="selectPill('yesterday', 'لا')">لا</button>
+            </div>
+          </div>
+
+          <!-- 4. الربط العام -->
+          <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/90 dark:bg-[#071510]/80 border border-slate-200/70 dark:border-emerald-800/30">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-[#0F4C3A]/10 dark:bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-link"></i></div>
+              <div>
+                <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-white">الربط العام</h4>
+                <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">١٠ صفحات</p>
+              </div>
+            </div>
+            <div class="pill-switch" id="switch-linking">
+              <button type="button" class="pill-option pill-neutral" onclick="selectPill('linking', 'نعم')">نعم</button>
+              <button type="button" class="pill-option pill-neutral" onclick="selectPill('linking', 'لا')">لا</button>
+            </div>
+          </div>
+
+          <!-- 5. المراجعة -->
+          <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50/90 dark:bg-[#071510]/80 border border-slate-200/70 dark:border-emerald-800/30">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-[#0F4C3A]/10 dark:bg-[#65D01E]/15 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-layer-group"></i></div>
+              <div>
+                <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-white">المراجعة</h4>
+                <p class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">١٠ صفحات</p>
+              </div>
+            </div>
+            <div class="pill-switch" id="switch-revision">
+              <button type="button" class="pill-option pill-neutral" onclick="selectPill('revision', 'نعم')">نعم</button>
+              <button type="button" class="pill-option pill-neutral" onclick="selectPill('revision', 'لا')">لا</button>
+            </div>
+          </div>
+
+          <!-- خانة العذر -->
+          <div id="todayExcuseBox" class="hidden p-3 rounded-2xl bg-rose-500/5 dark:bg-rose-950/25 border border-rose-500/25 space-y-2">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-rose-500/15 text-rose-500 flex items-center justify-center text-xs">
+                <i class="fa-solid fa-file-medical"></i>
+              </div>
+              <label for="studentExcuseSelect" class="text-xs font-extrabold text-slate-800 dark:text-rose-200">
+                اختر عذر اليوم (مختصر):
+              </label>
+            </div>
+            <select id="studentExcuseSelect" onchange="toggleCustomExcuseInput('today')"
+              class="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#071510] border border-rose-500/25 text-xs font-bold text-slate-800 dark:text-white focus:outline-none">
+              <option value="">بدون عذر</option>
+              <option value="مريض">مريض</option>
+              <option value="مسافر">مسافر</option>
+              <option value="ظرف عائلي">ظرف عائلي</option>
+              <option value="اختبار">اختبار</option>
+              <option value="OTHER">أخرى...</option>
+            </select>
+            <input type="text" id="studentCustomExcuseInput" maxlength="16" placeholder="اكتب العذر بكلمة أو كلمتين..."
+              class="hidden w-full px-3 py-2 rounded-xl bg-white dark:bg-[#071510] border border-rose-500/25 text-xs font-semibold text-slate-800 dark:text-white focus:outline-none" />
+          </div>
+        </div>
+
+        <div id="studentNoteBanner" class="hidden p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-xs text-amber-800 dark:text-amber-200 font-bold">
+          <i class="fa-solid fa-comment-dots ml-1 text-amber-500"></i>
+          <span>ملاحظة المعلم: </span><span id="studentNoteText"></span>
+        </div>
+
+        <div class="pt-1 space-y-2.5">
+          <button onclick="submitStudentDailyProgress()" id="btnDailySubmit"
+            class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-[#0A2E22] via-[#0F4C3A] to-[#16A34A] text-white font-black text-xs sm:text-sm shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>حفظ وإرسال إنجاز اليوم</span>
+          </button>
+
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="openWeeklyPreview()"
+              class="py-2.5 px-2 rounded-2xl bg-slate-100 dark:bg-emerald-950/60 text-slate-700 dark:text-emerald-200 font-extrabold text-[11px] border border-slate-200/80 dark:border-emerald-700/30 flex items-center justify-center gap-1">
+              <i class="fa-solid fa-eye text-emerald-500"></i>
+              <span>سجل الأسبوع</span>
+            </button>
+
+            <button onclick="openForgotDayModal()"
+              class="py-2.5 px-2 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-300 font-extrabold text-[11px] border border-amber-500/25 flex items-center justify-center gap-1">
+              <i class="fa-solid fa-bell"></i>
+              <span>يوم سابق</span>
+            </button>
+
+            <button onclick="openStudentCommModal('group')"
+              class="py-2.5 px-2 rounded-2xl bg-sky-500/10 text-sky-700 dark:text-sky-300 font-extrabold text-[11px] border border-sky-500/25 flex items-center justify-center gap-1">
+              <i class="fa-solid fa-comments"></i>
+              <span>المحادثة</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- نافذة الاحتفال المبهرة بعد الإرسال -->
+  <div id="celebrationModal" class="no-print fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-6 w-full max-w-sm shadow-2xl border-2 border-[#65D01E] text-center space-y-4 animate-pop">
+      <div class="relative w-20 h-20 mx-auto">
+        <div class="absolute inset-0 rounded-full bg-[#65D01E]/25 animate-ping"></div>
+        <div class="relative w-20 h-20 rounded-full bg-gradient-to-br from-[#0F4C3A] to-[#16A34A] text-white flex items-center justify-center text-3xl shadow-xl border-2 border-[#D4AF37]">
+          <i class="fa-solid fa-award text-[#FDE68A]"></i>
+        </div>
+      </div>
+      <div>
+        <span class="inline-block px-3 py-0.5 rounded-full bg-[#65D01E]/20 text-[#0F4C3A] dark:text-[#7CE82B] text-[11px] font-black mb-1">بارك الله في همتك</span>
+        <h3 class="text-lg font-black text-slate-900 dark:text-white" id="celebrationTitle">تم اعتماد وردك اليومي بنجاح!</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-300 mt-1.5 leading-relaxed">
+          نسأل الله أن يبارك لك في حفظك ومراجعتك ويجعلك من أهل القرآن وخاصته.
+        </p>
+      </div>
+      <div class="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-extrabold text-[#0F4C3A] dark:text-[#7CE82B]" id="celebrationSummaryBadge">
+        --
+      </div>
+      <button onclick="document.getElementById('celebrationModal').classList.add('hidden')"
+        class="w-full py-3 rounded-2xl bg-gradient-to-r from-[#0A2E22] to-[#16A34A] text-white font-black text-xs shadow-lg">
+        متابعة
+      </button>
+    </div>
+  </div>
+
+  <!-- نافذة المحادثة والرسائل والاستبيان للطلاب -->
+  <div id="studentCommModal" class="no-print fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl w-full max-w-md h-[84vh] max-h-[640px] shadow-2xl border border-emerald-500/30 flex flex-col overflow-hidden">
+      <div class="bg-[#0A2E22] text-white px-4 py-3 flex items-center justify-between border-b border-[#65D01E]/30">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-comments text-[#7CE82B]"></i>
+          <h3 class="text-xs sm:text-sm font-black">المحادثة والرسائل والاستبيان</h3>
+        </div>
+        <button onclick="document.getElementById('studentCommModal').classList.add('hidden')" class="px-3 py-1 rounded-xl bg-white/15 text-xs font-bold">إغلاق</button>
+      </div>
+
+      <div class="grid grid-cols-3 p-2 bg-slate-100 dark:bg-[#071510] gap-1.5 border-b border-slate-200 dark:border-emerald-800/40">
+        <button id="tabBtnDirect" onclick="switchStudentCommTab('direct')" class="py-2 rounded-xl text-[11px] font-black bg-[#0F4C3A] text-white">
+          رسائل المشرف
+        </button>
+        <button id="tabBtnPoll" onclick="switchStudentCommTab('poll')" class="py-2 rounded-xl text-[11px] font-black text-slate-600 dark:text-slate-300">
+          الاستبيانات
+        </button>
+        <button id="tabBtnGroup" onclick="switchStudentCommTab('group')" class="py-2 rounded-xl text-[11px] font-black text-slate-600 dark:text-slate-300">
+          المحادثة الجماعية
+        </button>
+      </div>
+
+      <!-- 1. المحادثة الخاصة مع المشرف (صحين أزرق سماوي عند القراءة) -->
+      <div id="commDirectPanel" class="flex-1 flex flex-col overflow-hidden bg-[#ECE5DD]/60 dark:bg-[#06120E]">
+        <div id="directChatBubblesList" class="flex-1 overflow-y-auto p-3.5 space-y-3"></div>
+        <form id="directReplyForm" onsubmit="event.preventDefault(); sendStudentDirectReply();" class="hidden p-2.5 bg-white dark:bg-[#0A1F18] border-t border-slate-200 dark:border-emerald-800/40 flex items-center gap-2">
+          <input type="text" id="studentDirectReplyInput" maxlength="200" placeholder="اكتب ردك للمشرف..."
+            class="flex-1 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none" />
+          <button type="submit" class="w-10 h-10 rounded-xl bg-[#16A34A] text-white flex items-center justify-center shadow shrink-0">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- 2. الاستبيانات -->
+      <div id="commPollPanel" class="hidden flex-1 overflow-y-auto p-3.5 space-y-3 bg-[#ECE5DD]/60 dark:bg-[#06120E]"></div>
+
+      <!-- 3. المحادثة الجماعية -->
+      <div id="commGroupPanel" class="hidden flex-1 flex flex-col overflow-hidden bg-[#ECE5DD]/60 dark:bg-[#06120E]">
+        <div id="groupChatMessagesList" class="flex-1 overflow-y-auto p-3.5 space-y-2.5"></div>
+        <form onsubmit="event.preventDefault(); sendStudentGroupChatMessage();" class="p-2.5 bg-white dark:bg-[#0A1F18] border-t border-slate-200 dark:border-emerald-800/40 flex items-center gap-2">
+          <input type="text" id="studentGroupChatInput" maxlength="200" placeholder="اكتب رسالتك في المحادثة الجماعية..."
+            class="flex-1 px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none" />
+          <button type="submit" class="w-10 h-10 rounded-xl bg-[#16A34A] text-white flex items-center justify-center shadow shrink-0">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة التعليمات (?) -->
+  <div id="instructionsModal" class="no-print fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-emerald-500/30 space-y-3.5">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-emerald-800/40 pb-2.5">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-[#65D01E]/20 text-[#0F4C3A] dark:text-[#7CE82B] flex items-center justify-center text-sm font-black">
+            <i class="fa-solid fa-circle-info"></i>
+          </div>
+          <h3 class="text-sm font-black text-slate-900 dark:text-white">تعليمات وإرشادات مهمة</h3>
+        </div>
+        <button onclick="document.getElementById('instructionsModal').classList.add('hidden')" class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 text-xs font-bold">✕</button>
+      </div>
+
+      <ul class="space-y-2.5 text-xs text-slate-700 dark:text-slate-200 leading-relaxed font-medium">
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-hand-pointer text-[#16A34A] mt-1 shrink-0"></i>
+          <span><b>تحديد جميع البنود:</b> يجب النقر على (نعم) أو (لا) لكل بند من البنود الخمسة قبل الإرسال.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-file-lines text-amber-500 mt-1 shrink-0"></i>
+          <span><b>مقدار الحفظ:</b> عند اختيار (نعم) في الحفظ الجديد، يظهر المقدار الافتراضي (صفحة)، ويمكنك تغييره لنصف صفحة أو صفحتين أو غير ذلك.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-rotate text-sky-500 mt-1 shrink-0"></i>
+          <span><b>التعديل خلال اليوم:</b> إذا أرسلت (لا) ثم أتممت وردك لاحقاً في نفس اليوم (من 12:00 ليلاً إلى 12:00 ليلاً)، يمكنك الدخول واختيار (نعم) وإعادة الإرسال.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-file-medical text-rose-500 mt-1 shrink-0"></i>
+          <span><b>كتابة العذر:</b> اختر العذر المختصر من القائمة أو اكتبه بكلمة واحدة فقط حتى لا يتأثر تنسيق الجدول.</span>
+        </li>
+      </ul>
+
+      <button onclick="document.getElementById('instructionsModal').classList.add('hidden')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#0F4C3A] to-[#16A34A] text-white text-xs font-black shadow">
+        فهمت ذلك
+      </button>
+    </div>
+  </div>
+
+  <!-- نافذة معاينة وحفظ سجل الأسبوع للطالب -->
+  <div id="previewModalOverlay" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-sm overflow-y-auto p-2 sm:p-5 flex items-center justify-center">
+    <div id="studentPreviewContainer" class="bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden my-auto">
+      <div class="no-print bg-[#0A2E22] text-white px-4 py-3 flex items-center justify-between gap-2 border-b border-[#65D01E]/30 flex-wrap">
+        <span class="text-xs font-extrabold"><i class="fa-solid fa-table text-[#7CE82B] ml-1.5"></i> سجل المتابعة الأسبوعي (نسخة الطالب)</span>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#65D01E] to-[#16A34A] text-[#051B14] font-black text-xs shadow flex items-center gap-1.5">
+            <i class="fa-solid fa-print"></i> <span>حفظ / طباعة سجلي</span>
+          </button>
+          <button onclick="document.getElementById('previewModalOverlay').classList.add('hidden')" class="px-3.5 py-1.5 rounded-xl bg-white/15 text-white text-xs font-bold">إغلاق</button>
+        </div>
+      </div>
+      <div id="studentPreviewBg" class="p-3 sm:p-5 bg-slate-100 overflow-x-auto">
+        <div id="studentCertSheet" class="luxury-cert-frame bg-white text-slate-900 rounded-2xl p-5 min-w-[880px] flex flex-col justify-between">
+          <div>
+            <div class="h-2.5 w-full bg-gradient-to-r from-[#0A2E22] via-[#D4AF37] to-[#16A34A] rounded-full mb-3"></div>
+            <div class="grid grid-cols-12 gap-3 items-center pb-3 border-b-2 border-[#D4AF37]/40 mb-3">
+              <div class="col-span-4 flex items-center gap-2.5">
+                <div class="w-14 h-14 rounded-2xl border-2 border-[#0A2E22]/20 p-1 flex items-center justify-center overflow-hidden" id="pdfLogoSlot"></div>
+                <div>
+                  <p class="text-[10px] font-bold text-[#D4AF37]">المملكة العربية السعودية</p>
+                  <h3 class="text-sm font-black text-[#0A2E22]">مجمع حلقات الإمام الشاطبي</h3>
+                  <p class="text-[10px] font-bold text-slate-500">نسخة معاينة خاصة بالطالب</p>
+                </div>
+              </div>
+              <div class="col-span-4 text-center">
+                <div class="inline-block px-5 py-2 rounded-2xl bg-[#0A2E22] text-[#FDF8E2] border border-[#D4AF37] font-amiri text-base font-black">
+                  سجل متابعة حفظ المتون العلمية
+                </div>
+                <p class="text-[10px] font-extrabold text-[#0F4C3A] mt-1" id="certWeekSubtitle">--</p>
+              </div>
+              <div class="col-span-4 bg-emerald-50/70 border-2 border-[#0F4C3A]/25 rounded-xl p-2 text-xs space-y-1">
+                <div class="flex justify-between"><span class="font-bold text-slate-600">الطالب:</span><span class="font-black text-[#0A2E22]" id="certStudentName">--</span></div>
+                <div class="flex justify-between"><span class="font-bold text-slate-600">المتن:</span><span class="font-black text-[#16A34A]" id="certStudentMatn">--</span></div>
+              </div>
+            </div>
+
+            <div id="certTableWrapper" class="rounded-xl border-2 border-[#0A2E22] overflow-hidden"></div>
+          </div>
+
+          <div class="pt-2 border-t-2 border-[#D4AF37]/40 text-center">
+            <p class="font-amiri text-xl font-black text-[#0A2E22]">﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾</p>
+            <p class="text-[10px] text-slate-500 font-semibold mt-0.5">سجل متابعة شخصي للطالب (غير مخصص للاعتماد الرسمي)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة نسيان يوم سابق -->
+  <div id="forgotDayModal" class="no-print fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-[#0D241C] rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-amber-500/30 space-y-3 my-auto">
+      <h3 class="text-sm font-black text-slate-900 dark:text-white text-center">طلب رصد يوم سابق</h3>
+      
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 mb-1">اختر اليوم وتاريخه الهجري:</label>
+        <select id="forgotDaySelect" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200 dark:border-emerald-700/40 text-xs font-black text-slate-900 dark:text-white"></select>
+      </div>
+
+      <div class="space-y-2 pt-1">
+        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-[#071510] border border-slate-200/70 dark:border-emerald-800/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold">الحفظ الجديد</span>
+            <div class="pill-switch" id="fswitch-memorization">
+              <button type="button" class="pill-option pill-neutral" onclick="selectForgotPill('memorization', 'نعم')">نعم</button>
+              <button type="button" class="pill-option pill-neutral" onclick="selectForgotPill('memorization', 'لا')">لا</button>
+            </div>
+          </div>
+          <div id="forgotMemAmountBox" class="hidden pt-1.5 border-t border-slate-200/60 dark:border-emerald-800/30 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-emerald-600 dark:text-[#7CE82B]">مقدار الحفظ:</span>
+              <select id="forgotMemAmountSelect" onchange="toggleCustomMemAmount('forgot')" class="px-2.5 py-1 rounded-lg bg-white dark:bg-[#0D241C] border border-emerald-500/30 text-[11px] font-black">
+                <option value="صفحة" selected>صفحة (افتراضي)</option>
+                <option value="نصف صفحة">نصف صفحة</option>
+                <option value="صفحة ونصف">صفحة ونصف</option>
+                <option value="صفحتان">صفحتان</option>
+                <option value="صفحتان ونصف">صفحتان ونصف</option>
+                <option value="ثلاث صفحات">ثلاث صفحات</option>
+                <option value="CUSTOM">آخر...</option>
+              </select>
+            </div>
+            <input type="text" id="forgotCustomMemAmountInput" maxlength="16" placeholder="اكتب المقدار..."
+              class="hidden w-full px-2.5 py-1.5 rounded-lg bg-white dark:bg-[#0D241C] border border-emerald-500/30 text-[11px] font-bold" />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between bg-slate-50 dark:bg-[#071510] px-3 py-2 rounded-xl border border-slate-200/70 dark:border-emerald-800/30">
+          <span class="text-xs font-extrabold">مقدار التكرار</span>
+          <div class="pill-switch" id="fswitch-repetition">
+            <button type="button" class="pill-option pill-neutral" onclick="selectForgotPill('repetition', 'نعم')">نعم</button>
+            <button type="button" class="pill-option pill-neutral" onclick="selectForgotPill('repetition', 'لا')">لا</button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between bg-slate-50 dark:bg-[#071510] px-3 py-2 rounded-xl border border-slate-200/70 dark:border-emerald-800/30">
+          <span class="text-xs font-extrabold">تكرار الأمس</span>
+          <div class="pill-switch" id="fswitch-yesterday">
+            <button type="button" class="pill-option pill-neutral" onclick="selectForgotPill('yesterday', 'نعم')">نعم</button>
+            <button type="button" class="pill-option pill-neutral" onclick="selectForgotPill('yesterday', 'لا')">لا</button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between bg-slate-50 dark:bg-[#071510] px-3 py-2 rounded-xl border border-slate-200/70 dark:border-emerald-800/30">
+          <span class="text-xs font-extrabold">الربط العام</span>
+          <div class="pill-switch" id="fswitch-linking">
+            <button type="button" class="pill-option pill-neutral" onclick="selectForgotPill('linking', 'نعم')">نعم</button>
+            <button type="button" class="pill-option pill-neutral" onclick="selectForgotPill('linking', 'لا')">لا</button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between bg-slate-50 dark:bg-[#071510] px-3 py-2 rounded-xl border border-slate-200/70 dark:border-emerald-800/30">
+          <span class="text-xs font-extrabold">المراجعة</span>
+          <div class="pill-switch" id="fswitch-revision">
+            <button type="button" class="pill-option pill-neutral" onclick="selectForgotPill('revision', 'نعم')">نعم</button>
+            <button type="button" class="pill-option pill-neutral" onclick="selectForgotPill('revision', 'لا')">لا</button>
+          </div>
+        </div>
+
+        <div id="forgotExcuseBox" class="hidden space-y-1.5 pt-1">
+          <select id="forgotExcuseSelect" onchange="toggleCustomExcuseInput('forgot')"
+            class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-rose-500/30 text-xs font-bold text-slate-900 dark:text-white">
+            <option value="">بدون عذر</option>
+            <option value="مريض">مريض</option>
+            <option value="مسافر">مسافر</option>
+            <option value="ظرف عائلي">ظرف عائلي</option>
+            <option value="اختبار">اختبار</option>
+            <option value="OTHER">أخرى...</option>
+          </select>
+          <input type="text" id="forgotCustomExcuseInput" maxlength="16" placeholder="اكتب العذر باختصار..."
+            class="hidden w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#071510] border border-rose-500/30 text-xs font-semibold text-slate-900 dark:text-white" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 pt-2">
+        <button onclick="sendForgotDayNotification()" class="py-2.5 rounded-xl bg-amber-500 text-white text-xs font-black">إرسال للمشرف</button>
+        <button onclick="document.getElementById('forgotDayModal').classList.add('hidden')" class="py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toastBox" class="no-print fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300 bg-[#0A2E22] text-white border border-[#65D01E]/40 px-4 py-2.5 rounded-2xl shadow-2xl text-xs font-extrabold flex items-center gap-2">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-[#7CE82B]"></i>
+    <span id="toastText">تم</span>
+  </div>
+
+  <script>
+    document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+    document.addEventListener('dblclick', function(e) { e.preventDefault(); }, { passive: false });
+
+    const FIREBASE_DB_URL = "https://shetibi-moton-tracker-default-rtdb.firebaseio.com";
+    const DEFAULT_LOGO_PATH = "Saaa.png";
+
+    const ALL_WEEK_DAYS = [
+      { key: 'thu', idx: 4, ar: 'الخميس', offsetFromThu: 0, optional: false },
+      { key: 'fri', idx: 5, ar: 'الجمعة', offsetFromThu: 1, optional: true },
+      { key: 'sat', idx: 6, ar: 'السبت', offsetFromThu: 2, optional: true },
+      { key: 'sun', idx: 0, ar: 'الأحد', offsetFromThu: 3, optional: false },
+      { key: 'mon', idx: 1, ar: 'الإثنين', offsetFromThu: 4, optional: false },
+      { key: 'tue', idx: 2, ar: 'الثلاثاء', offsetFromThu: 5, optional: false },
+      { key: 'wed', idx: 3, ar: 'الأربعاء', offsetFromThu: 6, optional: false }
+    ];
+
+    let state = {
+      theme: localStorage.getItem('shatibi_theme') || 'dark',
+      lockedStudentId: localStorage.getItem('shatibi_locked_student_id') || null,
+      cloudLogoUrl: null,
+      studentData: null,
+      adminMessages: [],
+      pollsList: [],
+      groupMessages: [],
+      serverTimeOffsetMs: 0,
+      forceOptionalFriSatOpen: false,
+      todayForm: { memorization: null, repetition: null, yesterday: null, linking: null, revision: null },
+      forgotForm: { memorization: null, repetition: null, yesterday: null, linking: null, revision: null }
+    };
+
+    function playCelebrationChime() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.09);
+          gain.gain.setValueAtTime(0.08, ctx.currentTime + i * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.09 + 0.35);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + i * 0.09);
+          osc.stop(ctx.currentTime + i * 0.09 + 0.36);
+        });
+      } catch (e) {}
+    }
+
+    async function syncServerTime() {
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/.info/serverTimeOffset.json`);
+        if (res.ok) {
+          const offset = await res.json();
+          if (typeof offset === 'number') {
+            state.serverTimeOffsetMs = offset;
+            return;
+          }
+        }
+        const headRes = await fetch(`${FIREBASE_DB_URL}/settings.json`, { method: 'HEAD' });
+        const serverDateStr = headRes.headers.get('date');
+        if (serverDateStr) {
+          const serverMs = new Date(serverDateStr).getTime();
+          if (!isNaN(serverMs)) state.serverTimeOffsetMs = serverMs - Date.now();
+        }
+      } catch (e) {}
+    }
+
+    function getTrustedNow() {
+      return new Date(Date.now() + state.serverTimeOffsetMs);
+    }
+
+    function formatHijriDate(dateObj, includeYear = true) {
+      const opts = includeYear
+        ? { year: 'numeric', month: '2-digit', day: '2-digit' }
+        : { month: '2-digit', day: '2-digit' };
+      return dateObj.toLocaleDateString('ar-SA-u-ca-islamic-umalqura', opts);
+    }
+
+    function getCurrentWeekContext() {
+      const now = getTrustedNow();
+      const dayNum = now.getDay();
+      const daysSinceThursday = (dayNum - 4 + 7) % 7;
+      const thursdayStart = new Date(now);
+      thursdayStart.setDate(now.getDate() - daysSinceThursday);
+
+      const wednesdayEnd = new Date(thursdayStart);
+      wednesdayEnd.setDate(thursdayStart.getDate() + 6);
+
+      const weekId = `W_${thursdayStart.getFullYear()}_${String(thursdayStart.getMonth() + 1).padStart(2, '0')}_${String(thursdayStart.getDate()).padStart(2, '0')}`;
+      const startHijri = formatHijriDate(thursdayStart, false);
+      const endHijri = formatHijriDate(wednesdayEnd, true);
+      const weekLabel = `أسبوع (${startHijri} إلى ${endHijri})`;
+      const monthName = thursdayStart.toLocaleDateString('ar-SA-u-ca-islamic-umalqura', { month: 'long', year: 'numeric' });
+
+      const dayDatesMap = {};
+      ALL_WEEK_DAYS.forEach(d => {
+        const dt = new Date(thursdayStart);
+        dt.setDate(thursdayStart.getDate() + d.offsetFromThu);
+        dayDatesMap[d.key] = formatHijriDate(dt, true);
+      });
+
+      const dayObj = ALL_WEEK_DAYS.find(d => d.idx === dayNum);
+      return {
+        weekId,
+        weekLabel,
+        monthName,
+        dayDatesMap,
+        key: dayObj ? dayObj.key : 'thu',
+        ar: dayObj ? dayObj.ar : 'الخميس',
+        isFriOrSat: (dayNum === 5 || dayNum === 6),
+        todayHijri: formatHijriDate(now, true)
+      };
+    }
+
+    function renderLogos() {
+      const src = state.cloudLogoUrl || DEFAULT_LOGO_PATH;
+      const html = `<img src="${src}" alt="شعار مجمع الإمام الشاطبي" class="w-full h-full object-contain rounded-xl" />`;
+      ['headerLogoBox', 'loginLogoBox', 'cardMiniLogo', 'pdfLogoSlot'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = html;
+      });
+    }
+
+    async function loadCloudSettingsAndStudent() {
+      const dot = document.getElementById('cloudStatusDot');
+      try {
+        await syncServerTime();
+        const settingsRes = await fetch(`${FIREBASE_DB_URL}/settings.json`);
+        const settings = await settingsRes.json();
+        if (settings && settings.logo) state.cloudLogoUrl = settings.logo;
+        renderLogos();
+
+        if (state.lockedStudentId) {
+          const stuRes = await fetch(`${FIREBASE_DB_URL}/students/${state.lockedStudentId}.json`);
+          const stu = await stuRes.json();
+          if (stu && stu.id && stu.name && stu.code) {
+            state.studentData = stu;
+            dot.className = 'w-2.5 h-2.5 rounded-full bg-[#65D01E]';
+            openStudentWorkspace();
+            await syncCommunications();
+            if (!window._stuPoll) window._stuPoll = setInterval(checkStudentStatusAndMessages, 12000);
+            return;
+          } else {
+            showDeletedAccountScreen();
+            return;
+          }
+        }
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-[#65D01E]';
+        document.getElementById('studentCodeLoginView').classList.remove('hidden');
+      } catch (err) {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
+        document.getElementById('studentCodeLoginView').classList.remove('hidden');
+        showToast('تعذر الاتصال بالإنترنت', 'error');
+      }
+    }
+
+    function showDeletedAccountScreen() {
+      document.getElementById('studentCodeLoginView').classList.add('hidden');
+      document.getElementById('studentDailyView').classList.add('hidden');
+      document.getElementById('headerChatBtn').classList.add('hidden');
+      document.getElementById('studentDeletedView').classList.remove('hidden');
+    }
+
+    function logoutDeletedStudent() {
+      localStorage.removeItem('shatibi_locked_student_id');
+      state.lockedStudentId = null;
+      state.studentData = null;
+      if (window._stuPoll) { clearInterval(window._stuPoll); window._stuPoll = null; }
+      document.getElementById('studentDeletedView').classList.add('hidden');
+      document.getElementById('studentCodeInput').value = '';
+      document.getElementById('btnVerifyCode').disabled = false;
+      document.getElementById('studentCodeLoginView').classList.remove('hidden');
+    }
+
+    async function checkStudentStatusAndMessages() {
+      if (!state.lockedStudentId) return;
+      try {
+        const stuRes = await fetch(`${FIREBASE_DB_URL}/students/${state.lockedStudentId}.json`);
+        const stu = await stuRes.json();
+        if (!stu || !stu.id) {
+          showDeletedAccountScreen();
+          return;
+        }
+        state.studentData = stu;
+        await syncCommunications();
+      } catch (e) {}
+    }
+
+    async function syncCommunications() {
+      if (!state.studentData) return;
+      try {
+        const [msgRes, pollRes, grpRes] = await Promise.all([
+          fetch(`${FIREBASE_DB_URL}/adminMessages.json`),
+          fetch(`${FIREBASE_DB_URL}/polls.json`),
+          fetch(`${FIREBASE_DB_URL}/groupChat.json`)
+        ]);
+        const msgData = await msgRes.json();
+        const pollData = await pollRes.json();
+        const grpData = await grpRes.json();
+
+        const allAdminMsgs = (msgData && typeof msgData === 'object') ? Object.values(msgData).filter(Boolean) : [];
+        state.adminMessages = allAdminMsgs.filter(m =>
+          m.targetType === 'all' || (Array.isArray(m.targetIds) && m.targetIds.includes(state.studentData.id))
+        ).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+
+        state.pollsList = (pollData && typeof pollData === 'object')
+          ? Object.values(pollData).filter(Boolean).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
+          : [];
+
+        state.groupMessages = (grpData && typeof grpData === 'object')
+          ? Object.values(grpData).filter(Boolean).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))
+          : [];
+
+        if (!document.getElementById('studentCommModal').classList.contains('hidden')) {
+          if (!document.getElementById('commDirectPanel').classList.contains('hidden')) {
+            await markUnreadAdminMessagesAsSeen();
+            renderDirectChatWhatsApp();
+          }
+          if (!document.getElementById('commPollPanel').classList.contains('hidden')) {
+            renderStudentPollsList();
+          }
+          if (!document.getElementById('commGroupPanel').classList.contains('hidden')) {
+            await markGroupMessagesAsSeen();
+            renderStudentGroupChat();
+          }
+        }
+
+        renderSupervisorDirectBanner();
+        renderActivePollBanner();
+      } catch (e) {}
+    }
+
+    async function markUnreadAdminMessagesAsSeen() {
+      if (!state.studentData) return;
+      const stuId = state.studentData.id;
+      const updates = [];
+      state.adminMessages.forEach(m => {
+        if (!m.seenBy || !m.seenBy[stuId]) {
+          if (!m.seenBy) m.seenBy = {};
+          m.seenBy[stuId] = true;
+          updates.push(
+            fetch(`${FIREBASE_DB_URL}/adminMessages/${m.id}/seenBy/${stuId}.json`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(true)
+            }).catch(() => {})
+          );
+        }
+      });
+      if (updates.length) await Promise.all(updates);
+      renderSupervisorDirectBanner();
+    }
+
+    async function markGroupMessagesAsSeen() {
+      if (!state.studentData) return;
+      const stuId = state.studentData.id;
+      const updates = [];
+      state.groupMessages.forEach(g => {
+        if (g.senderId !== stuId && (!g.seenBy || !g.seenBy[stuId])) {
+          if (!g.seenBy) g.seenBy = {};
+          g.seenBy[stuId] = true;
+          updates.push(
+            fetch(`${FIREBASE_DB_URL}/groupChat/${g.id}/seenBy/${stuId}.json`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(true)
+            }).catch(() => {})
+          );
+        }
+      });
+      if (updates.length) await Promise.all(updates);
+    }
+
+    function renderSupervisorDirectBanner() {
+      const box = document.getElementById('supervisorDirectMessagesBox');
+      const dot = document.getElementById('unreadMsgDot');
+      if (!state.studentData) return;
+      const stuId = state.studentData.id;
+
+      const unseenMsgs = state.adminMessages.filter(m => !m.seenBy || !m.seenBy[stuId]);
+      if (unseenMsgs.length === 0) {
+        box.classList.add('hidden');
+        dot.classList.add('hidden');
+        return;
+      }
+
+      dot.classList.remove('hidden');
+      const latest = unseenMsgs[unseenMsgs.length - 1];
+      box.classList.remove('hidden');
+      box.innerHTML = `
+        <div class="p-3.5 rounded-2xl bg-sky-500/15 border border-sky-500/35 flex items-center justify-between gap-2 text-xs">
+          <div class="min-w-0">
+            <p class="font-black text-sky-700 dark:text-sky-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-envelope"></i> رسالة من المشرف: منير بن عبد الله آل صادر
+            </p>
+            <p class="text-slate-700 dark:text-slate-200 font-bold mt-0.5 truncate">${latest.text}</p>
+          </div>
+          <button onclick="openStudentCommModal('direct')" class="px-3 py-2 rounded-xl bg-sky-600 text-white font-black text-[11px] shrink-0 shadow">
+            عرض والرد
+          </button>
+        </div>
+      `;
+    }
+
+    function renderActivePollBanner() {
+      const box = document.getElementById('activePollBannerBox');
+      if (!state.studentData || !state.pollsList || state.pollsList.length === 0) {
+        box.classList.add('hidden');
+        return;
+      }
+      const stuId = state.studentData.id;
+      const unanswered = state.pollsList.find(p => !p.votes || !p.votes[stuId]);
+      if (!unanswered) {
+        box.classList.add('hidden');
+        return;
+      }
+
+      box.classList.remove('hidden');
+      box.innerHTML = `
+        <div class="p-3.5 rounded-2xl bg-amber-500/15 border border-amber-500/35 flex items-center justify-between gap-2 text-xs">
+          <div class="min-w-0">
+            <p class="font-black text-amber-700 dark:text-amber-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-square-poll-vertical"></i> استبيان جديد من المشرف
+            </p>
+            <p class="text-slate-700 dark:text-slate-200 font-bold mt-0.5 truncate">${unanswered.question}</p>
+          </div>
+          <button onclick="openStudentCommModal('poll')" class="px-3 py-2 rounded-xl bg-amber-500 text-white font-black text-[11px] shrink-0 shadow">
+            تصويت الآن
+          </button>
+        </div>
+      `;
+    }
+
+    async function handleStudentCodeLogin(e) {
+      e.preventDefault();
+      const enteredCode = document.getElementById('studentCodeInput').value.trim();
+      if (!enteredCode) return;
+
+      const btn = document.getElementById('btnVerifyCode');
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/students.json`);
+        const allStudents = await res.json();
+        const validList = (allStudents && typeof allStudents === 'object')
+          ? Object.values(allStudents).filter(s => s && s.id && s.name && s.code)
+          : [];
+
+        const matched = validList.find(s => String(s.code).trim() === enteredCode);
+        if (!matched) {
+          showToast('الكود غير صحيح، تأكد من المشرف', 'error');
+          btn.disabled = false;
+          return;
+        }
+
+        state.lockedStudentId = matched.id;
+        state.studentData = matched;
+        localStorage.setItem('shatibi_locked_student_id', matched.id);
+
+        document.getElementById('studentCodeLoginView').classList.add('hidden');
+        openStudentWorkspace();
+        await syncCommunications();
+        if (!window._stuPoll) window._stuPoll = setInterval(checkStudentStatusAndMessages, 12000);
+        showToast(`تم تفعيل حسابك بنجاح يا ${matched.name}`);
+      } catch (err) {
+        showToast('حدث خطأ في الاتصال بالإنترنت', 'error');
+        btn.disabled = false;
+      }
+    }
+
+    function enableOptionalFriSatLogging() {
+      state.forceOptionalFriSatOpen = true;
+      openStudentWorkspace();
+    }
+
+    function toggleCustomMemAmount(mode) {
+      const sel = document.getElementById(mode === 'today' ? 'todayMemAmountSelect' : 'forgotMemAmountSelect');
+      const inp = document.getElementById(mode === 'today' ? 'todayCustomMemAmountInput' : 'forgotCustomMemAmountInput');
+      if (sel.value === 'CUSTOM') inp.classList.remove('hidden');
+      else inp.classList.add('hidden');
+    }
+
+    function getSelectedMemAmount(mode) {
+      const formObj = mode === 'today' ? state.todayForm : state.forgotForm;
+      if (formObj.memorization !== 'نعم') return '';
+      const sel = document.getElementById(mode === 'today' ? 'todayMemAmountSelect' : 'forgotMemAmountSelect').value;
+      if (sel === 'CUSTOM') {
+        const custom = document.getElementById(mode === 'today' ? 'todayCustomMemAmountInput' : 'forgotCustomMemAmountInput').value.trim();
+        return custom || 'صفحة';
+      }
+      return sel || 'صفحة';
+    }
+
+    function checkExcuseVisibility(mode) {
+      const formObj = mode === 'today' ? state.todayForm : state.forgotForm;
+      const box = document.getElementById(mode === 'today' ? 'todayExcuseBox' : 'forgotExcuseBox');
+      const hasNo = Object.values(formObj).includes('لا');
+      if (hasNo) {
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+        document.getElementById(mode === 'today' ? 'studentExcuseSelect' : 'forgotExcuseSelect').value = '';
+        document.getElementById(mode === 'today' ? 'studentCustomExcuseInput' : 'forgotCustomExcuseInput').classList.add('hidden');
+      }
+    }
+
+    function toggleCustomExcuseInput(mode) {
+      const sel = document.getElementById(mode === 'today' ? 'studentExcuseSelect' : 'forgotExcuseSelect');
+      const inp = document.getElementById(mode === 'today' ? 'studentCustomExcuseInput' : 'forgotCustomExcuseInput');
+      if (sel.value === 'OTHER') inp.classList.remove('hidden');
+      else inp.classList.add('hidden');
+    }
+
+    function getSelectedExcuseValue(mode) {
+      const formObj = mode === 'today' ? state.todayForm : state.forgotForm;
+      if (!Object.values(formObj).includes('لا')) return '';
+      const sel = document.getElementById(mode === 'today' ? 'studentExcuseSelect' : 'forgotExcuseSelect').value;
+      if (sel === 'OTHER') {
+        return document.getElementById(mode === 'today' ? 'studentCustomExcuseInput' : 'forgotCustomExcuseInput').value.trim();
+      }
+      return sel;
+    }
+
+    function openStudentWorkspace() {
+      const stu = state.studentData;
+      if (!stu) return;
+
+      document.getElementById('studentCodeLoginView').classList.add('hidden');
+      document.getElementById('studentDeletedView').classList.add('hidden');
+      document.getElementById('studentDailyView').classList.remove('hidden');
+      document.getElementById('headerChatBtn').classList.remove('hidden');
+
+      document.getElementById('activeStudentName').textContent = stu.name;
+      document.getElementById('activeStudentMeta').textContent = stu.level ? `${stu.matn} • ${stu.level}` : stu.matn;
+
+      const weekCtx = getCurrentWeekContext();
+      const rec = (stu.weeks && stu.weeks[weekCtx.weekId] && stu.weeks[weekCtx.weekId].days && stu.weeks[weekCtx.weekId].days[weekCtx.key]) || {};
+
+      if (weekCtx.isFriOrSat && !state.forceOptionalFriSatOpen && !rec.submitted) {
+        document.getElementById('friSatDayTitle').textContent = `يوم ${weekCtx.ar}`;
+        document.getElementById('friSatHijriDate').textContent = weekCtx.todayHijri;
+        document.getElementById('friSatNoticeCard').classList.remove('hidden');
+        document.getElementById('todayTaskCard').classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('friSatNoticeCard').classList.add('hidden');
+      document.getElementById('todayTaskCard').classList.remove('hidden');
+
+      document.getElementById('todayNameBadge').textContent = weekCtx.ar;
+      document.getElementById('todayDateDisplay').textContent = weekCtx.todayHijri;
+      document.getElementById('weekLabelDisplay').textContent = weekCtx.weekLabel;
+
+      state.todayForm = {
+        memorization: rec.memorization || null,
+        repetition: rec.repetition || null,
+        yesterday: rec.yesterday || null,
+        linking: rec.linking || null,
+        revision: rec.revision || null
+      };
+      Object.keys(state.todayForm).forEach(f => updatePillVisual(f, state.todayForm[f]));
+
+      const memBox = document.getElementById('todayMemAmountBox');
+      const memSel = document.getElementById('todayMemAmountSelect');
+      const memCust = document.getElementById('todayCustomMemAmountInput');
+      if (state.todayForm.memorization === 'نعم') {
+        memBox.classList.remove('hidden');
+        const presets = ['صفحة', 'نصف صفحة', 'صفحة ونصف', 'صفحتان', 'صفحتان ونصف', 'ثلاث صفحات'];
+        const amt = rec.memAmount || 'صفحة';
+        if (presets.includes(amt)) {
+          memSel.value = amt;
+          memCust.classList.add('hidden');
+        } else {
+          memSel.value = 'CUSTOM';
+          memCust.value = amt;
+          memCust.classList.remove('hidden');
+        }
+      } else {
+        memBox.classList.add('hidden');
+        memSel.value = 'صفحة';
+        memCust.classList.add('hidden');
+      }
+
+      checkExcuseVisibility('today');
+
+      const presetExcuses = ['مريض', 'مسافر', 'ظرف عائلي', 'اختبار'];
+      const selEl = document.getElementById('studentExcuseSelect');
+      const custEl = document.getElementById('studentCustomExcuseInput');
+      if (rec.excuse) {
+        if (presetExcuses.includes(rec.excuse)) {
+          selEl.value = rec.excuse;
+          custEl.classList.add('hidden');
+        } else {
+          selEl.value = 'OTHER';
+          custEl.value = rec.excuse;
+          custEl.classList.remove('hidden');
+        }
+      }
+
+      const noteBanner = document.getElementById('studentNoteBanner');
+      if (rec.note) {
+        document.getElementById('studentNoteText').textContent = rec.note;
+        noteBanner.classList.remove('hidden');
+      } else {
+        noteBanner.classList.add('hidden');
+      }
+
+      const chip = document.getElementById('todayStatusChip');
+      if (rec.submitted) {
+        chip.className = 'px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-[#7CE82B]';
+        chip.innerHTML = `<i class="fa-solid fa-circle-check ml-1"></i> تم الإرسال (${rec.time || ''})`;
+      } else {
+        chip.className = 'px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+        chip.textContent = 'انقر نعم أو لا لكل بند';
+      }
+    }
+
+    function selectPill(field, value) {
+      state.todayForm[field] = value;
+      updatePillVisual(field, value);
+
+      if (field === 'memorization') {
+        const memBox = document.getElementById('todayMemAmountBox');
+        if (value === 'نعم') {
+          memBox.classList.remove('hidden');
+          document.getElementById('todayMemAmountSelect').value = 'صفحة';
+          document.getElementById('todayCustomMemAmountInput').classList.add('hidden');
+        } else {
+          memBox.classList.add('hidden');
+        }
+      }
+      checkExcuseVisibility('today');
+    }
+
+    function updatePillVisual(field, value) {
+      const container = document.getElementById(`switch-${field}`);
+      if (!container) return;
+      const btns = container.querySelectorAll('.pill-option');
+      if (value === 'نعم') {
+        btns[0].className = 'pill-option yes-active';
+        btns[1].className = 'pill-option pill-neutral';
+      } else if (value === 'لا') {
+        btns[0].className = 'pill-option pill-neutral';
+        btns[1].className = 'pill-option no-active';
+      } else {
+        btns[0].className = 'pill-option pill-neutral';
+        btns[1].className = 'pill-option pill-neutral';
+      }
+    }
+
+    function selectForgotPill(field, value) {
+      state.forgotForm[field] = value;
+      const container = document.getElementById(`fswitch-${field}`);
+      if (!container) return;
+      const btns = container.querySelectorAll('.pill-option');
+      if (value === 'نعم') {
+        btns[0].className = 'pill-option yes-active';
+        btns[1].className = 'pill-option pill-neutral';
+      } else if (value === 'لا') {
+        btns[0].className = 'pill-option pill-neutral';
+        btns[1].className = 'pill-option no-active';
+      } else {
+        btns[0].className = 'pill-option pill-neutral';
+        btns[1].className = 'pill-option pill-neutral';
+      }
+
+      if (field === 'memorization') {
+        const box = document.getElementById('forgotMemAmountBox');
+        if (value === 'نعم') {
+          box.classList.remove('hidden');
+          document.getElementById('forgotMemAmountSelect').value = 'صفحة';
+          document.getElementById('forgotCustomMemAmountInput').classList.add('hidden');
+        } else {
+          box.classList.add('hidden');
+        }
+      }
+      checkExcuseVisibility('forgot');
+    }
+
+    async function submitStudentDailyProgress() {
+      const missingField = Object.values(state.todayForm).some(v => v !== 'نعم' && v !== 'لا');
+      if (missingField) {
+        showToast('يرجى النقر على (نعم) أو (لا) لجميع البنود الخمسة أولاً', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btnDailySubmit');
+      btn.disabled = true;
+
+      await syncServerTime();
+      const weekCtx = getCurrentWeekContext();
+      if (!weekCtx.key || !state.studentData) {
+        btn.disabled = false;
+        return;
+      }
+
+      const stu = state.studentData;
+      if (!stu.weeks) stu.weeks = {};
+      if (!stu.weeks[weekCtx.weekId]) {
+        stu.weeks[weekCtx.weekId] = {
+          label: weekCtx.weekLabel,
+          monthName: weekCtx.monthName,
+          dayDatesMap: weekCtx.dayDatesMap,
+          days: {}
+        };
+      }
+
+      const existingNote = (stu.weeks[weekCtx.weekId].days[weekCtx.key] && stu.weeks[weekCtx.weekId].days[weekCtx.key].note) || '';
+      const excuseVal = getSelectedExcuseValue('today');
+      const memAmt = getSelectedMemAmount('today');
+      const timeStr = getTrustedNow().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+
+      stu.weeks[weekCtx.weekId].days[weekCtx.key] = {
+        date: weekCtx.todayHijri,
+        memorization: state.todayForm.memorization,
+        memAmount: memAmt,
+        repetition: state.todayForm.repetition,
+        yesterday: state.todayForm.yesterday,
+        linking: state.todayForm.linking,
+        revision: state.todayForm.revision,
+        excuse: excuseVal,
+        note: existingNote,
+        submitted: true,
+        time: timeStr
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/students/${stu.id}/weeks/${weekCtx.weekId}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(stu.weeks[weekCtx.weekId])
+        });
+        openStudentWorkspace();
+
+        playCelebrationChime();
+        if (typeof confetti === 'function') {
+          confetti({ particleCount: 90, spread: 75, origin: { y: 0.65 }, colors: ['#0F4C3A', '#65D01E', '#D4AF37', '#FFFFFF'] });
+          setTimeout(() => {
+            confetti({ particleCount: 55, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#65D01E', '#D4AF37'] });
+            confetti({ particleCount: 55, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#65D01E', '#D4AF37'] });
+          }, 220);
+        }
+
+        const yesCount = Object.values(state.todayForm).filter(v => v === 'نعم').length;
+        document.getElementById('celebrationTitle').textContent = `أحسنت يا ${stu.name}!`;
+        document.getElementById('celebrationSummaryBadge').textContent =
+          `تم رصد يوم ${weekCtx.ar} (${weekCtx.todayHijri}) • الحفظ: ${state.todayForm.memorization === 'نعم' ? memAmt : 'لا'} • الإنجاز: ${yesCount} من 5`;
+        document.getElementById('celebrationModal').classList.remove('hidden');
+      } catch (err) {
+        showToast('تعذر الإرسال، تأكد من الإنترنت', 'error');
+      }
+      btn.disabled = false;
+    }
+
+    function openForgotDayModal() {
+      const weekCtx = getCurrentWeekContext();
+      const sel = document.getElementById('forgotDaySelect');
+      sel.innerHTML = '';
+
+      ALL_WEEK_DAYS.forEach(d => {
+        const hijriDate = weekCtx.dayDatesMap[d.key] || '';
+        const opt = document.createElement('option');
+        opt.value = d.key;
+        opt.textContent = `${d.ar} — (${hijriDate})${d.optional ? ' [اختياري]' : ''}`;
+        sel.appendChild(opt);
+      });
+
+      state.forgotForm = { memorization: null, repetition: null, yesterday: null, linking: null, revision: null };
+      Object.keys(state.forgotForm).forEach(f => selectForgotPill(f, null));
+      document.getElementById('forgotMemAmountBox').classList.add('hidden');
+      document.getElementById('forgotMemAmountSelect').value = 'صفحة';
+      document.getElementById('forgotCustomMemAmountInput').classList.add('hidden');
+      document.getElementById('forgotExcuseSelect').value = '';
+      document.getElementById('forgotCustomExcuseInput').value = '';
+      document.getElementById('forgotCustomExcuseInput').classList.add('hidden');
+      document.getElementById('forgotDayModal').classList.remove('hidden');
+    }
+
+    async function sendForgotDayNotification() {
+      if (!state.studentData) return;
+      const missingField = Object.values(state.forgotForm).some(v => v !== 'نعم' && v !== 'لا');
+      if (missingField) {
+        showToast('يرجى النقر على (نعم) أو (لا) لجميع البنود أولاً', 'error');
+        return;
+      }
+
+      await syncServerTime();
+      const dayKey = document.getElementById('forgotDaySelect').value;
+      const dayObj = ALL_WEEK_DAYS.find(d => d.key === dayKey);
+      const excuseVal = getSelectedExcuseValue('forgot');
+      const memAmt = getSelectedMemAmount('forgot');
+      const weekCtx = getCurrentWeekContext();
+      const hijriDate = weekCtx.dayDatesMap[dayKey] || weekCtx.todayHijri;
+
+      const summaryText = `التاريخ: ${hijriDate} | الحفظ: ${state.forgotForm.memorization === 'نعم' ? memAmt : 'لا'} | التكرار: ${state.forgotForm.repetition} | الأمس: ${state.forgotForm.yesterday} | الربط: ${state.forgotForm.linking} | المراجعة: ${state.forgotForm.revision}${excuseVal ? ' | العذر: ' + excuseVal : ''}`;
+
+      const alertId = `ALT_${Date.now()}`;
+      const alertObj = {
+        id: alertId,
+        studentId: state.studentData.id,
+        studentName: state.studentData.name,
+        weekId: weekCtx.weekId,
+        weekLabel: weekCtx.weekLabel,
+        dayKey: dayKey,
+        dayAr: dayObj ? dayObj.ar : dayKey,
+        hijriDate: hijriDate,
+        memorization: state.forgotForm.memorization,
+        memAmount: memAmt,
+        repetition: state.forgotForm.repetition,
+        yesterday: state.forgotForm.yesterday,
+        linking: state.forgotForm.linking,
+        revision: state.forgotForm.revision,
+        excuse: excuseVal,
+        details: summaryText,
+        createdAt: getTrustedNow().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/forgotAlerts/${alertId}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(alertObj)
+        });
+        document.getElementById('forgotDayModal').classList.add('hidden');
+        showToast('تم إرسال البيانات للمشرف لاعتمادها!');
+      } catch (err) {
+        showToast('تعذر الإرسال', 'error');
+      }
+    }
+
+    // إدارة المحادثة والاستبيان للطلاب
+    async function openStudentCommModal(tab = 'direct') {
+      document.getElementById('studentCommModal').classList.remove('hidden');
+      await switchStudentCommTab(tab);
+    }
+
+    async function switchStudentCommTab(tab) {
+      const btnD = document.getElementById('tabBtnDirect');
+      const btnP = document.getElementById('tabBtnPoll');
+      const btnG = document.getElementById('tabBtnGroup');
+      const panD = document.getElementById('commDirectPanel');
+      const panP = document.getElementById('commPollPanel');
+      const panG = document.getElementById('commGroupPanel');
+
+      [btnD, btnP, btnG].forEach(b => b.className = 'py-2 rounded-xl text-[11px] font-black text-slate-600 dark:text-slate-300');
+      [panD, panP, panG].forEach(p => p.classList.add('hidden'));
+
+      if (tab === 'direct') {
+        btnD.className = 'py-2 rounded-xl text-[11px] font-black bg-[#0F4C3A] text-white';
+        panD.classList.remove('hidden');
+        await markUnreadAdminMessagesAsSeen();
+        renderDirectChatWhatsApp();
+      } else if (tab === 'poll') {
+        btnP.className = 'py-2 rounded-xl text-[11px] font-black bg-[#0F4C3A] text-white';
+        panP.classList.remove('hidden');
+        renderStudentPollsList();
+      } else {
+        btnG.className = 'py-2 rounded-xl text-[11px] font-black bg-[#0F4C3A] text-white';
+        panG.classList.remove('hidden');
+        await markGroupMessagesAsSeen();
+        renderStudentGroupChat();
+      }
+    }
+
+    function renderDirectChatWhatsApp() {
+      const box = document.getElementById('directChatBubblesList');
+      const form = document.getElementById('directReplyForm');
+
+      if (!state.adminMessages || state.adminMessages.length === 0) {
+        form.classList.add('hidden');
+        box.innerHTML = `<div class="py-12 text-center text-xs text-slate-500 font-bold">لا توجد رسائل من المشرف حالياً.</div>`;
+        return;
+      }
+
+      form.classList.remove('hidden');
+      const stuId = state.studentData.id;
+      let timeline = [];
+
+      state.adminMessages.forEach(m => {
+        timeline.push({
+          isMe: false,
+          senderLabel: 'المشرف: منير بن عبد الله آل صادر',
+          text: m.text,
+          timeStr: m.timeStr || '',
+          timestamp: m.timestamp || 0
+        });
+        if (m.replies && typeof m.replies === 'object') {
+          Object.values(m.replies).forEach(r => {
+            if (r && r.studentId === stuId) {
+              timeline.push({
+                isMe: true,
+                senderLabel: 'أنت',
+                text: r.text,
+                timeStr: r.timeStr || '',
+                seenByAdmin: r.seenByAdmin === true,
+                timestamp: r.timestamp || (m.timestamp + 1)
+              });
+            }
+          });
+        }
+      });
+
+      timeline.sort((a, b) => a.timestamp - b.timestamp);
+
+      box.innerHTML = timeline.map(item => `
+        <div class="flex flex-col ${item.isMe ? 'items-start' : 'items-end'}">
+          <div class="max-w-[82%] px-3.5 py-2.5 rounded-2xl text-xs shadow-sm ${item.isMe ? 'bg-[#DCF8C6] dark:bg-[#0F4C3A] text-slate-900 dark:text-white rounded-tr-none' : 'bg-white dark:bg-[#0D241C] text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-emerald-800/40 rounded-tl-none'}">
+            <p class="text-[10px] font-black mb-0.5 ${item.isMe ? 'text-[#0F4C3A] dark:text-[#7CE82B]' : 'text-[#16A34A] dark:text-[#7CE82B]'}">
+              ${item.senderLabel}
+            </p>
+            <p class="font-semibold leading-relaxed">${item.text}</p>
+            <div class="flex items-center justify-end gap-1 mt-1 text-[9px] opacity-85">
+              <span>${item.timeStr}</span>
+              ${item.isMe ? `<i class="fa-solid fa-check-double ${item.seenByAdmin ? 'text-[#0284C7] dark:text-[#38BDF8]' : 'text-slate-400'}"></i>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendStudentDirectReply() {
+      const inp = document.getElementById('studentDirectReplyInput');
+      const text = inp.value.trim();
+      if (!text || !state.adminMessages.length) return;
+
+      const latestMsg = state.adminMessages[state.adminMessages.length - 1];
+      const replyId = `REP_${Date.now()}`;
+      const replyObj = {
+        id: replyId,
+        studentId: state.studentData.id,
+        studentName: state.studentData.name,
+        text,
+        seenByAdmin: false,
+        timestamp: Date.now(),
+        timeStr: getTrustedNow().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/adminMessages/${latestMsg.id}/replies/${replyId}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(replyObj)
+        });
+        inp.value = '';
+        await syncCommunications();
+      } catch (e) {
+        showToast('تعذر إرسال الرد', 'error');
+      }
+    }
+
+    // عرض وتصويت الطلاب على استبيانات المشرف
+    function renderStudentPollsList() {
+      const box = document.getElementById('commPollPanel');
+      if (!state.pollsList || state.pollsList.length === 0) {
+        box.innerHTML = `<div class="py-12 text-center text-xs text-slate-500 font-bold">لا توجد استبيانات متاحة حالياً.</div>`;
+        return;
+      }
+
+      const stuId = state.studentData.id;
+      box.innerHTML = state.pollsList.map(p => {
+        const votesArr = p.votes ? Object.values(p.votes) : [];
+        const totalVotes = votesArr.length;
+        const myVote = p.votes && p.votes[stuId];
+
+        const optionsHtml = (p.options || []).map((opt, idx) => {
+          const isChosen = myVote && myVote.optionIndex === idx;
+          const count = votesArr.filter(v => v.optionIndex === idx).length;
+          const pct = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+
+          return `
+            <button type="button" onclick="voteOnPoll('${p.id}', ${idx})"
+              class="w-full text-right p-2.5 rounded-xl border transition ${isChosen ? 'bg-emerald-500/15 border-[#16A34A] text-[#0F4C3A] dark:text-[#7CE82B]' : 'bg-slate-50 dark:bg-[#071510] border-slate-200 dark:border-emerald-800/40 text-slate-800 dark:text-white'} space-y-1">
+              <div class="flex items-center justify-between text-xs font-black">
+                <span>${isChosen ? '✓ ' : ''}${opt}</span>
+                ${myVote ? `<span class="text-[10px]">${pct}%</span>` : ''}
+              </div>
+              ${myVote ? `
+                <div class="w-full h-1.5 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-[#16A34A]" style="width:${pct}%"></div>
+                </div>
+              ` : ''}
+            </button>
+          `;
+        }).join('');
+
+        return `
+          <div class="p-4 rounded-2xl bg-white dark:bg-[#0D241C] border border-amber-500/30 space-y-2.5 text-xs shadow-sm">
+            <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold">
+              <span class="text-amber-600 dark:text-amber-300 font-black">المشرف: منير بن عبد الله آل صادر</span>
+              <span>${p.timeStr || ''}</span>
+            </div>
+            <p class="font-black text-sm text-slate-900 dark:text-white">${p.question}</p>
+            <div class="space-y-2">${optionsHtml}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function voteOnPoll(pollId, optionIndex) {
+      if (!state.studentData) return;
+      const stuId = state.studentData.id;
+      const voteObj = {
+        studentId: stuId,
+        studentName: state.studentData.name,
+        optionIndex
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/polls/${pollId}/votes/${stuId}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(voteObj)
+        });
+        await syncCommunications();
+        showToast('تم تسجيل اختيارك في الاستبيان بنجاح');
+      } catch (e) {
+        showToast('تعذر التصويت', 'error');
+      }
+    }
+
+    function renderStudentGroupChat() {
+      const box = document.getElementById('groupChatMessagesList');
+      if (!state.groupMessages || state.groupMessages.length === 0) {
+        box.innerHTML = `<div class="py-12 text-center text-xs text-slate-500 font-bold">ابدأ المحادثة الجماعية مع المشرف وزملائك...</div>`;
+        return;
+      }
+
+      box.innerHTML = state.groupMessages.map(g => {
+        const isMe = g.senderId === state.studentData.id;
+        const isAdmin = g.isAdmin === true;
+        const seenCount = g.seenBy ? Object.keys(g.seenBy).length : 0;
+        const senderTitle = isMe ? 'أنت' : (isAdmin ? 'المشرف: منير بن عبد الله آل صادر' : g.senderName);
+
+        return `
+          <div class="flex flex-col ${isMe ? 'items-start' : 'items-end'}">
+            <div class="max-w-[82%] px-3.5 py-2.5 rounded-2xl text-xs shadow-sm ${isMe ? 'bg-[#DCF8C6] dark:bg-[#0F4C3A] text-slate-900 dark:text-white rounded-tr-none' : 'bg-white dark:bg-[#0D241C] text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-emerald-800/40 rounded-tl-none'}">
+              <p class="text-[10px] font-black mb-0.5 ${isMe ? 'text-[#0F4C3A] dark:text-[#7CE82B]' : (isAdmin ? 'text-amber-600 dark:text-amber-300' : 'text-[#16A34A] dark:text-[#7CE82B]')}">
+                ${senderTitle}
+              </p>
+              <p class="font-semibold leading-relaxed">${g.text}</p>
+              <div class="flex items-center justify-end gap-1 mt-1 text-[9px] opacity-85">
+                <span>${g.timeStr || ''}</span>
+                ${isMe ? `<i class="fa-solid fa-check-double ${seenCount > 0 ? 'text-[#0284C7] dark:text-[#38BDF8]' : 'text-slate-400'}"></i>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendStudentGroupChatMessage() {
+      const inp = document.getElementById('studentGroupChatInput');
+      const text = inp.value.trim();
+      if (!text || !state.studentData) return;
+
+      const id = `GRP_${Date.now()}`;
+      const msgObj = {
+        id,
+        senderId: state.studentData.id,
+        senderName: state.studentData.name,
+        isAdmin: false,
+        text,
+        seenBy: {},
+        timestamp: Date.now(),
+        timeStr: getTrustedNow().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      try {
+        await fetch(`${FIREBASE_DB_URL}/groupChat/${id}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(msgObj)
+        });
+        inp.value = '';
+        await syncCommunications();
+      } catch (e) {
+        showToast('تعذر الإرسال', 'error');
+      }
+    }
+
+    function openWeeklyPreview() {
+      const stu = state.studentData;
+      if (!stu) return;
+      const weekCtx = getCurrentWeekContext();
+      const weekObj = (stu.weeks && stu.weeks[weekCtx.weekId]) || { label: weekCtx.weekLabel, days: {} };
+
+      document.getElementById('certStudentName').textContent = stu.name;
+      document.getElementById('certStudentMatn').textContent = stu.level ? `${stu.matn} (${stu.level})` : stu.matn;
+      document.getElementById('certWeekSubtitle').textContent = weekObj.label;
+
+      const memCell = (r) => {
+        if (r.memorization === 'نعم') {
+          const amt = r.memAmount || 'صفحة';
+          return `<span style="background:#16A34A;color:#fff;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:900;">${amt}</span>`;
+        }
+        return r.memorization === 'لا'
+          ? `<span style="background:#E11D48;color:#fff;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:900;">لا ✕</span>`
+          : '—';
+      };
+
+      const pill = (v) => v === 'نعم'
+        ? `<span style="background:#16A34A;color:#fff;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:900;">نعم ✓</span>`
+        : (v === 'لا' ? `<span style="background:#E11D48;color:#fff;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:900;">لا ✕</span>` : '—');
+
+      let rows = '';
+      ALL_WEEK_DAYS.forEach((d, idx) => {
+        const r = (weekObj.days && weekObj.days[d.key]) || {};
+        const dt = r.date || (weekObj.dayDatesMap && weekObj.dayDatesMap[d.key]) || weekCtx.dayDatesMap[d.key] || '—';
+        rows += `
+          <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-[#F0F9F4]'}">
+            <td class="py-2 px-2 border-l border-emerald-900/20 font-black text-[#0A2E22]">${d.ar}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20 text-slate-600">${dt}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${memCell(r)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.repetition)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.yesterday)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.linking)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20">${pill(r.revision)}</td>
+            <td class="py-2 px-2 border-l border-emerald-900/20 text-[10px] text-rose-700 font-extrabold">${r.excuse || '—'}</td>
+            <td class="py-2 px-2 text-[10px]">${r.note || '—'}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('certTableWrapper').innerHTML = `
+        <table class="w-full border-collapse text-center text-[11px]">
+          <thead>
+            <tr class="bg-[#0A2E22] text-white font-extrabold">
+              <th class="py-2.5 px-2 border-l border-emerald-700/50 text-[#FDE68A]">اليوم</th>
+              <th class="py-2.5 px-2 border-l border-emerald-700/50">التاريخ</th>
+              <th class="py-2.5 px-2 border-l border-emerald-700/50">الحفظ الجديد</th>
+              <th class="py-2.5 px-2 border-l border-emerald-700/50">التكرار</th>
+              <th class="py-2.5 px-2 border-l border-emerald-700/50">تكرار الأمس</th>
+              <th class="py-2.5 px-2 border-l border-emerald-700/50">الربط العام</th>
+              <th class="py-2.5 px-2 border-l border-emerald-700/50">المراجعة</th>
+              <th class="py-2.5 px-2 border-l border-emerald-700/50 text-rose-200">العذر</th>
+              <th class="py-2.5 px-2">ملاحظات</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-emerald-900/20 font-bold">${rows}</tbody>
+        </table>
+      `;
+      document.getElementById('previewModalOverlay').classList.remove('hidden');
+    }
+
+    function toggleTheme() {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('shatibi_theme', state.theme);
+      applyTheme(state.theme);
+    }
+
+    function applyTheme(t) {
+      if (t === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    }
+
+    function showToast(msg, type = 'success') {
+      const box = document.getElementById('toastBox');
+      document.getElementById('toastText').textContent = msg;
+      document.getElementById('toastIcon').className = type === 'error'
+        ? 'fa-solid fa-circle-exclamation text-rose-400'
+        : 'fa-solid fa-circle-check text-[#7CE82B]';
+      box.classList.remove('opacity-0', 'translate-y-3');
+      box.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(window._tt);
+      window._tt = setTimeout(() => {
+        box.classList.remove('opacity-100', 'translate-y-0');
+        box.classList.add('opacity-0', 'translate-y-3');
+      }, 2800);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      applyTheme(state.theme);
+      renderLogos();
+      loadCloudSettingsAndStudent();
+    });
+  </script>
+</body>
+</html>
